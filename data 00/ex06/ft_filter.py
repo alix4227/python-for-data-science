@@ -1,14 +1,15 @@
 # import sys
 
 
-def strlen(string):
-    return (len(string) > 2)
-
-
 def ft_filter(function, iterable):
-    if function == None:
+    """
+    Return an iterator yielding those items of
+    iterable for which function(item)
+    is true. If function is None, return the items that are true.
+    """
+    if function is None:
         yield from [item for item in iterable if item]
-    else: 
+    else:
         yield from [item for item in iterable if function(item)]
 
 
@@ -20,6 +21,7 @@ def main():
 
     print(list(filter(lambda s: s % 2 == 0, test)))
     print(list(ft_filter(lambda s: s % 2 == 0, test)))
+
 
 if __name__ == "__main__":
     main()
