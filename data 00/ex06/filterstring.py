@@ -14,10 +14,12 @@ def ft_filter(function, iterable):
 def main(args):
     try:
         if (len(args) != 3):
-            raise AssertionError("Wrong number of arguments")
+            raise AssertionError("the arguments are bad")
         if not isinstance(args[1], str) :
             raise AssertionError("the arguments are bad")
-        print(list(ft_filter(lambda s: len(s) > int(args[2]), args[1])))
+        tab = args[1].split()
+        result = ft_filter(lambda s: len(s) > int(args[2]), tab)
+        print(list(result))
     except AssertionError as e:
         print(f'AssertionError: {e}')
     except ValueError:
