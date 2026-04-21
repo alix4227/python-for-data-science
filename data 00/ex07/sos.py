@@ -41,9 +41,23 @@ def main(args):
         "8": "---..",
         "9": "----."
 }
-    string = args[1].upper()
-    for item in string:
-        print(NESTED_MORSE[item])
+    result = []
+    try:
+        if len(args) != 2:
+            raise AssertionError("the arguments are bad")
+        string = args[1].upper()
+        for item in string:
+            if item.isspace() or item.isalnum():
+                result.append(NESTED_MORSE[item])
+            else:
+                raise AssertionError("the arguments are bad")
+        for i in range(len(result)):
+            if i != len(result) - 1: 
+                print(result[i], end=" ")
+            else:
+                print(result[i])
+    except AssertionError as e:
+        print(f"AssertionError: {e}")
 
 
 if __name__ == "__main__":
