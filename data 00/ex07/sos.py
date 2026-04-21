@@ -43,7 +43,7 @@ def main(args):
         "7": "--...",
         "8": "---..",
         "9": "----."
-}
+    }
     result = []
     try:
         if len(args) != 2:
@@ -55,7 +55,7 @@ def main(args):
             else:
                 raise AssertionError("the arguments are bad")
         for i in range(len(result)):
-            if i != len(result) - 1: 
+            if i != len(result) - 1:
                 print(result[i], end=" ")
             else:
                 print(result[i])
