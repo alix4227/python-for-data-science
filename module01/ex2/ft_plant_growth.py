@@ -6,7 +6,7 @@ class Plant:
         self.name: str = name
         if height < 0 or age < 0 or growth < 0:
             raise ValueError("value error")
-        if not isinstance(name, str):
+        if not isinstance(name, str) or not name.strip():
             raise ValueError("Not a string")
         self.height: float = height
         self.age_days: int = age
@@ -37,7 +37,7 @@ class Plant:
 
 def main(args):
     try:
-        rose = Plant(15, 25, 30, 0.8)
+        rose = Plant("", 25, 30, 0.8)
         rose.show()
     except ValueError as e:
         print(f'{e}')
