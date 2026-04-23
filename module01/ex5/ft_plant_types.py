@@ -61,12 +61,33 @@ class Plant:
             raise ValueError("height value error")
         self._height = value
         
+class Flower(Plant):
+    def __init__(self, name: str, height: float, age: int, growth: float, color: str):
+        super().__init__(name, height, age, growth)
+        if not isinstance(color, str):
+            raise ValueError("Not a string")
+        self._color = color
+    def bloom(self, value: bool):
+        if not isinstance(value, bool):
+            raise ValueError("Not a boolean")
+        blooming = value
+        if blooming:
+            print(f' {self._name} is blooming beautifully!')
+        else:
+            print(f'{self._name} has not bloomed yet')
+    def show(self):
+        print('=== Flower')
+        print(f'{self._name}: {round(self._height, 2)}cm, {self._age_days} days old')
+        print(f' Color: {self._color}')
 
 
 def main(args):
     try:
-        rose = Plant("Rose", 25.0, 30, 0.8)
+        rose= Plant("Rose", 25.0, 30, 0.8, "red")
+        rose = Flower()
+        rose.age(2)
         rose.show()
+        rose.bloom(True)
     except ValueError as e:
         print(f'{e}')
     
