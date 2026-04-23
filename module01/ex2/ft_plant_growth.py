@@ -2,8 +2,12 @@ import sys
 
 class Plant:
     
-    def __init__(self, name, height, age, growth):
+    def __init__(self, name: str, height: float, age: int, growth: float):
         self.name: str = name
+        if height < 0 or age < 0 or growth < 0:
+            raise ValueError("value error")
+        if not isinstance(name, str):
+            raise ValueError("Not a string")
         self.height: float = height
         self.age_days: int = age
         self.total_growth: float = 0
@@ -11,7 +15,7 @@ class Plant:
     
     def show(self):
         print('=== Garden Plant Growth ===')
-        print(f'{self.name}: {round(self.height)}cm, {self.age_days} days old')
+        print(f'{self.name}: {round(self.height, 2)}cm, {self.age_days} days old')
         for i in range(1, 8):
             self.grow(self.growth)
             self.total_growth += self.growth
@@ -32,8 +36,12 @@ class Plant:
 
 
 def main(args):
-    rose = Plant("Rose", 25, 30, 0.8)
-    rose.show()
+    try:
+        rose = Plant(15, 25, 30, 0.8)
+        rose.show()
+    except ValueError as e:
+        print(f'{e}')
+    
 
 if __name__ == "__main__":
     main(sys.argv)
