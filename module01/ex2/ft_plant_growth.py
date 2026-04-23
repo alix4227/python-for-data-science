@@ -11,7 +11,7 @@ class Plant:
     
     def show(self):
         print('=== Garden Plant Growth ===')
-        print(f'{self.name}: {self.height}cm, {self.age_days} days old')
+        print(f'{self.name}: {round(self.height)}cm, {self.age_days} days old')
         for i in range(1, 8):
             self.grow(self.growth)
             self.total_growth += self.growth
