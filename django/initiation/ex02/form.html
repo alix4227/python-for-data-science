@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Form | 42 Paris</title>
+    <script src="popup.js"></script>
+  </head>
+  <body>
+    <h2>Sign up Form</h2>
+    <form>
+        <label>Firstname: <input id="firstname" type="text" required></label>
+        <br><br>
+        <label>Name: <input id="name" type="text"required></label>
+        <br><br>
+        <label>Age: <input id="age" type="number" min="1" required></label>
+        <br><br>
+        <label>Phone: <input id="phone" type="tel" required></label>
+        <br><br>
+        <label>Email: <input id= "email" type="email" required></label>
+        <br><br>
+        <label>Student at 42 ?: <input type="checkbox" id="student"></label>
+        <br><br>
+        <label>Male<input type="radio" id="gender_male" name="option"></label>
+        <label>Female<input type="radio" id="gender_female" name="option"></label>
+        <label>Other<input type="radio" id="gender_other" name="option"></label>
+        <br><br>
+        <input type="submit" value="Run sexy JS code" onclick="displayFormContents()">
+    </form>
+  </body>
+</html>
