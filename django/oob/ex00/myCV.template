@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{title}</title>
+    <style>
+      span {
+        text-decoration: underline;
+         font-weight: lighter;
+      }
+
+      .titre {
+        text-align: center;
+        font-weight: lighter;
+      }
+      .titre h1,
+      .titre h2 {
+        margin: 0;
+      }
+      
+      i {
+        color: grey;
+        font-size:medium;
+      }
+      h3 {
+        font-family: Cambria;
+      }
+      table,td,th,tr{
+        border: 1px solid;
+        border-collapse: collapse;
+        color:black
+      }
+      #sous_titre {
+        color: blue;
+        font-weight: 900;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="titre">
+        <h1 id="titre_cv" style=" margin-top: 40px;">{name}</h1>
+        <h2 style= text-align:center><i>{profession}</i></h2>
+        <h2 style= text-align:center><i>{age}</i></h2>
+    </div>
+    <div>
+        <h2 id="sous_titre"  style= "margin-top: 60px;"><u>Parcours Professionnel</u></h2>
+        <h3>Juriste Contieux-DGFIP <i>Décembre 2019 – Mai 2025</i></h3>
+        <ul>
+            <li>Traitement des réclamations contentieuses en matière de retenue à la source prélevée sur les dividendes versés à des OPCVM</li>
+            <li>Analyse de dossiers</li>
+            <li>Rédaction de mémoire en défense et de mémoire en réplique</li>
+        </ul>
+        <h3>Juriste Contentieux– GROUPAMA <i>Avril 2019 – Octobre 2019</i></h3>
+        <ol style="list-style-type: '- '">
+            <li>Gestion du contentieux et du précontentieux</li>
+            <li>Analyse et suivi de dossiers en lien avec des avocats</li>
+            <li>Rédaction de plainte et validation de conclusions</li>
+        </ol>
+    </div>
+    <h2 id="sous_titre"><u>Competences</u></h2>
+    <table>
+        <tr>
+            <th>Langages</th>
+            <th>Environnement</th>
+        </tr>
+        <tr>
+            <td>Python</td>
+            <td>Windows</td>
+        </tr>
+        <tr>
+            <td>C++</td>
+            <td>Linux</td>
+        </tr>
+        <tr>
+            <td>C</td>
+            <td>Mac</td>
+        </tr>
+        <tr>
+            <td>JS</td>
+            <td style="color: #424242;"></td>
+        </tr>
+    </table>
+  </body>
+</html>
