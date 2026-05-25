@@ -1,28 +1,22 @@
 import sys, os, re
+import settings
 #!/usr/bin/env python3
 
 def main(args):
     try:
         if len(args) != 2:
             raise(Exception("Error: Wrong number of args"))
-        if not os.path.exists("settings.py") or not os.path.exists(args[1]):
+        if not os.path.exists(args[1]):
             raise(Exception("Error: File doesnt exist"))
-        if not os.path.isfile("settings.py") or not os.path.isfile(args[1]):
+        if not os.path.isfile(args[1]):
             raise(Exception("Error: Not a file"))
         extension_template = os.path.splitext(args[1])[1]
         if extension_template != '.template':
             raise(TypeError(f'Error: Wrong extension->{extension_template}'))
-        content = {}
-        with open("settings.py", 'r') as file:
-            lines = file.readlines()
-            for line in lines:
-                key = line.split('=')[0].strip()
-                value = line.split('"')[1]
-                content[key] = value
         with open(args[1], 'r') as file2:
             content2 = file2.read()
         with open("file.html", 'w') as file3:
-           result = re.sub(r"\{(\w+)\}", lambda m: content[m.group(1)], content2)
+           result = re.sub(r"\{(\w+)\}", lambda m: getattr(settings, m.group(1), ''), content2)
            file3.write(result)
     except TypeError as e:
         print(str(e))
