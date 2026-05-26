@@ -1,2 +1,0 @@
-from intern import Intern
-
