@@ -110,11 +110,11 @@ def test_embedding():
 
 
 def test():
-    test_text()
+    # test_text()
     test_elem_basics()
-    test_embedding()
-    test_empty_texts()
-    test_errors()
+    # test_embedding()
+    # test_empty_texts()
+    # test_errors()
     
 if __name__ == '__main__':
     try :

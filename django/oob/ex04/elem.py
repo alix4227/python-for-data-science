@@ -27,7 +27,14 @@ class Elem:
 
         Obviously.
         """
-        [...]
+        if attr == {}:
+            attr = ''
+        if content is None:
+            content = ''
+        self.tag = tag
+        self.attr = attr
+        self.content = content
+        self.tag_type = tag_type
 
     def __str__(self):
         """
@@ -37,9 +44,9 @@ class Elem:
         elements...).
         """
         if self.tag_type == 'double':
-            [...]
+            result = f"<{self.tag}{self.attr}>{self.content}</{self.tag}>"
         elif self.tag_type == 'simple':
-            [...]
+            result = f"<{self.tag}{self.attr}/>"
         return result
 
     def __make_attr(self):
@@ -60,7 +67,7 @@ class Elem:
             return ''
         result = '\n'
         for elem in self.content:
-            result += [...]
+            result += elem
         return result
 
     def add_content(self, content):
@@ -83,5 +90,10 @@ class Elem:
                                                 for elem in content])))
 
 
+def main():
+    test = Elem(content=Text(''))
+    print(test)
+
+
 if __name__ == '__main__':
-    [...]
+    main()
