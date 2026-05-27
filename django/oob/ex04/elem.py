@@ -47,21 +47,26 @@ class Elem:
         self.content = content
         self.tag_type = tag_type
 
+    def render(self, level=0):
+        indent = '  ' * level
+
+        if self.content is None or self.content == '':
+            return f"{indent}<{self.tag}{self.attr}></{self.tag}>"
+        elif isinstance(self.content, Elem):
+            child = self.content.render(level + 1)
+            return f"{indent}<{self.tag}{self.attr}>\n{child}\n{indent}</{self.tag}>"
+        elif isinstance(self.content, list):
+            children = '\n'.join(
+                item.render(level + 1) if isinstance(item, Elem) else f"{indent}  {item}"
+                for item in self.content if item != ''
+            )
+            return f"{indent}<{self.tag}{self.attr}>\n{children}\n{indent}</{self.tag}>"
+        else:
+            # contenu texte simple
+            return f"{indent}<{self.tag}{self.attr}>\n{indent}  {self.content}\n{indent}</{self.tag}>"
+
     def __str__(self):
-        """
-        The __str__() method will permit us to make a plain HTML representation
-        of our elements.
-        Make sure it renders everything (tag, attributes, embedded
-        elements...).
-        """
-        if self.tag_type == 'double':
-            if self.content == '':
-                result = f"<{self.tag}{self.attr}></{self.tag}>"
-            else:
-                result = f"<{self.tag}{self.attr}>\n  {self.content}\n</{self.tag}>"
-        elif self.tag_type == 'simple':
-            result = f"<{self.tag}{self.attr}/>"
-        return result
+        return self.render(0)
 
     def __make_attr(self):
         """
@@ -105,6 +110,6 @@ class Elem:
 
 
 def main():
-    print()
+    print(str(Elem(content=Elem(content=Elem(content=Elem())))))
 if __name__ == '__main__':
     main()
