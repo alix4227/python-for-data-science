@@ -13,9 +13,12 @@ class Text(str):
         Do you really need a comment to understand this method?..
         """
         s = super().__str__()
-        s = s.replace('<', '&lt;')
-        s = s.replace('>', '&gt;')
-        s = s.replace('"', '&quot;')
+        if s == '<':
+            s = s.replace('<', '&lt;')
+        elif s == '>':
+            s = s.replace('>', '&gt;')
+        elif s == '"':
+            s = s.replace('"', '&quot;')
         s = s.replace('\n', '\n<br />\n')
         return s
 
@@ -40,8 +43,8 @@ class Elem:
             attr = ''
         if content is None:
             content = ''
-        if isinstance(content, list):
-            content = '\n  '.join(str(item) for item in content if item != '')
+        # if isinstance(content, list):
+        #     content = '\n  '.join(str(item) for item in content if item != '')
         self.tag = tag
         self.attr = attr
         self.content = content
@@ -49,16 +52,24 @@ class Elem:
 
     def render(self, level=0):
         indent = '  ' * level
-
+        
+        if self.tag_type != 'double':
+            return (f"{indent}<{self.tag}{self.attr} />")
+        # sans contenu
         if self.content is None or self.content == '':
             return f"{indent}<{self.tag}{self.attr}></{self.tag}>"
+        # contenu avec une ou plusieurs Element
         elif isinstance(self.content, Elem):
             child = self.content.render(level + 1)
             return f"{indent}<{self.tag}{self.attr}>\n{child}\n{indent}</{self.tag}>"
+        # contenu est une list
         elif isinstance(self.content, list):
+            filtered = [item for item in self.content if item != Text('')]
+            if not filtered:
+                return f"{indent}<{self.tag}{self.attr}></{self.tag}>"
             children = '\n'.join(
                 item.render(level + 1) if isinstance(item, Elem) else f"{indent}  {item}"
-                for item in self.content if item != ''
+                for item in filtered
             )
             return f"{indent}<{self.tag}{self.attr}>\n{children}\n{indent}</{self.tag}>"
         else:
@@ -110,6 +121,14 @@ class Elem:
 
 
 def main():
-    print(str(Elem(content=Elem(content=Elem(content=Elem())))))
+      
+ print(str(Elem(
+        tag='html',
+        content=[
+            Elem(tag='head', content=Elem(tag='title', content=Text('"Hello ground!"'))),
+            Elem(tag='body', content=Elem(tag='h1', content=Text('"Oh no, not again!"'))),
+            Elem(tag='img', attr=' src="http://i.imgur.com/pfp3T.jpg"', tag_type='single')
+        ]
+    )))
 if __name__ == '__main__':
     main()
