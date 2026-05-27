@@ -81,7 +81,7 @@ def test_errors():
     except Exception as e:
         assert isinstance(e, Elem.ValidationError)
 
-    # str can't be used :
+    # # str can't be used :
     try:
         elem = Elem()
         elem.add_content(['',])
@@ -110,11 +110,11 @@ def test_embedding():
 
 
 def test():
-    # test_text()
+    test_text()
     test_elem_basics()
-    # test_embedding()
-    # test_empty_texts()
-    # test_errors()
+    test_embedding()
+    test_empty_texts()
+    test_errors()
     
 if __name__ == '__main__':
     try :

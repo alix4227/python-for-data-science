@@ -7,19 +7,26 @@ class Text(str):
 
     Because directly using str class was too mainstream.
     """
-
+   
     def __str__(self):
         """
         Do you really need a comment to understand this method?..
         """
-        return super().__str__().replace('\n', '\n<br />\n')
+        s = super().__str__()
+        s = s.replace('<', '&lt;')
+        s = s.replace('>', '&gt;')
+        s = s.replace('"', '&quot;')
+        s = s.replace('\n', '\n<br />\n')
+        return s
 
 
 class Elem:
     """
     Elem will permit us to represent our HTML elements.
     """
-    [...]
+    class ValidationError(Exception):
+        def __init__(self, message='incorrect behaviour'):
+            super().__init__(message)
 
     def __init__(self, tag='div', attr={}, content=None, tag_type='double'):
         """
@@ -27,10 +34,14 @@ class Elem:
 
         Obviously.
         """
+        if not self.check_type(content):
+            raise self.ValidationError
         if attr == {}:
             attr = ''
         if content is None:
             content = ''
+        if isinstance(content, list):
+            content = '\n  '.join(str(item) for item in content if item != '')
         self.tag = tag
         self.attr = attr
         self.content = content
@@ -44,7 +55,10 @@ class Elem:
         elements...).
         """
         if self.tag_type == 'double':
-            result = f"<{self.tag}{self.attr}>{self.content}</{self.tag}>"
+            if self.content == '':
+                result = f"<{self.tag}{self.attr}></{self.tag}>"
+            else:
+                result = f"<{self.tag}{self.attr}>\n  {self.content}\n</{self.tag}>"
         elif self.tag_type == 'simple':
             result = f"<{self.tag}{self.attr}/>"
         return result
@@ -84,16 +98,13 @@ class Elem:
         Is this object a HTML-compatible Text instance or a Elem, or even a
         list of both?
         """
-        return (isinstance(content, Elem) or type(content) == Text or
+        return (content is None or isinstance(content, Elem) or type(content) == Text or
                 (type(content) == list and all([type(elem) == Text or
                                                 isinstance(elem, Elem)
                                                 for elem in content])))
 
 
 def main():
-    test = Elem(content=Text(''))
-    print(test)
-
-
+    print()
 if __name__ == '__main__':
     main()
