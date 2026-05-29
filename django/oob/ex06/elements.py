@@ -20,6 +20,10 @@ class Title(Elem):
     def __init__(self, content=None, attr={}, tag_type='double'):
         super().__init__(tag='title', attr=attr, content=content, tag_type=tag_type)
 
+class Test(Elem):
+    def __init__(self, content=None, attr={}, tag_type='double'):
+        super().__init__(tag='test', attr=attr, content=content, tag_type=tag_type)
+
 
 class Meta(Elem):
     def __init__(self, content=None, attr={}, tag_type='single'):
