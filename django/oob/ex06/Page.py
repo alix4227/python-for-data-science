@@ -10,18 +10,21 @@ class Page():
     def __init__(self, element):
         self.element = element
         self.balises = []
+        self.text_title = 0
         self.text = 0
 
 
-    def check_head_and_title(self):
+    def check_title_in_head(self):
+        title = 0
         head_block = str(self.element.content[0])
         balises = [tag.split('>')[0].lstrip('/') for tag in head_block.split('<')[1:]]
-        check_list = ['head', 'title']
         for item in balises:
-            if item not in check_list:
+            if item not in ('head', 'title'):
                 return (False)
-        return(True)
-        
+            if item in ('title'):
+                title += 1
+        return (title == 2)
+   
     def check_body_div_content(self, body):
         if isinstance(body.content, Elem):
             if not isinstance(body.content, BODY_ELEMENTS):
@@ -33,22 +36,22 @@ class Page():
         if isinstance(head, Elem):
             if isinstance(head, Title):
                 if isinstance(head.content, Text):
-                    self.text += 1
+                    self.text_title += 1
                 if isinstance(head.content, list):
                     for item in head.content:
                         if isinstance(item, Text):
-                            self.text += 1
+                            self.text_title += 1
             return self.check_title(head.content)
-        self.text = 0
-        return (self.text <= 1)
+        return (self.text_title <= 1)
     
     def check_h1_etc(self, body):
         if isinstance(body, Elem):
             if isinstance(body, TITLE_ETC_ELEMENTS):
                 if isinstance(body.content, list):
                     for item in body.content:
-                        if isinstance(item, Text):
-                            self.text += 1
+                        if not isinstance(item, Text):
+                            return False
+                        self.text += 1
                     if (self.text > 1):
                         return False
                 elif not isinstance(body.content, Text):
@@ -63,6 +66,8 @@ class Page():
 
 
     def check_body_and_head(self):
+        html_page = self.element
+        self.balises = [tag.split('>')[0].lstrip('/') for tag in str(html_page).split('<')[1:]]
         body = head = 0
         if self.balises[0] != 'html':
             return False
@@ -92,12 +97,11 @@ class Page():
 
     def checker(self):
         html_page = self.element
-        self.balises = [tag.split('>')[0].lstrip('/') for tag in str(html_page).split('<')[1:]]
         if not self.check_body_and_head():
             return False
         if not self.check_elements(html_page):
             return False
-        if not self.check_head_and_title():
+        if not self.check_title_in_head():
             return False
         if not self.check_body_div_content(self.element.content[1]):
             return False
