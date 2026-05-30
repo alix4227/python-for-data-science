@@ -3,11 +3,14 @@ from elements import*
 
 ELEMENTS = ['html', 'head', 'body',
 'title', 'meta', 'img', 'table', 'th', 'tr', 'td' , 'ul', 'ol', 'li', 'h1', 'h2', 'p', 'div', 'span', 'hr', 'br']
+BODY_ELEMENTS = (H1, H2, Div, Table, Ul, Ol, Span, Text)
+TITLE_ETC_ELEMENTS = (Title, H1, H2, Li, Th, Td)
 
-class Page(Elem):
+class Page():
     def __init__(self, element):
         self.element = element
         self.balises = []
+        self.text = 0
 
 
     def check_head_and_title(self):
@@ -19,16 +22,44 @@ class Page(Elem):
                 return (False)
         return(True)
         
-    def check_body_content(self, body):
-        body_block = self.element.content[1]
-        if isinstance(body.content, Div):
-            self.check_body_content(body.content)
-        # balises = [tag.split('>')[0].lstrip('/') for tag in str(body_block).split('<')[1:]]
-        # check_list = ['body', 'h1', 'h2', 'div', 'table', 'ul', 'ol', 'span']
-        # for item in balises:
-        #     if item not in check_list:
-        #         return (False)
-        return(True)
+    def check_body_div_content(self, body):
+        if isinstance(body.content, Elem):
+            if not isinstance(body.content, BODY_ELEMENTS):
+                return False
+            return self.check_body_div_content(body.content)
+        return True
+    
+    def check_title(self, head):
+        if isinstance(head, Elem):
+            if isinstance(head, Title):
+                if isinstance(head.content, Text):
+                    self.text += 1
+                if isinstance(head.content, list):
+                    for item in head.content:
+                        if isinstance(item, Text):
+                            self.text += 1
+            return self.check_title(head.content)
+        self.text = 0
+        return (self.text <= 1)
+    
+    def check_h1_etc(self, body):
+        if isinstance(body, Elem):
+            if isinstance(body, TITLE_ETC_ELEMENTS):
+                if isinstance(body.content, list):
+                    for item in body.content:
+                        if isinstance(item, Text):
+                            self.text += 1
+                    if (self.text > 1):
+                        return False
+                elif not isinstance(body.content, Text):
+                    return False
+                self.text = 0
+            return self.check_h1_etc(body.content)
+
+        elif isinstance(body, list):
+            for item in body:
+                self.check_h1_etc(item)
+        return True
 
 
     def check_body_and_head(self):
@@ -57,7 +88,11 @@ class Page(Elem):
             return False
         if not self.check_head_and_title():
             return False
-        if not self.check_body_content(self.element.content[1]):
+        if not self.check_body_div_content(self.element.content[1]):
+            return False
+        if not self.check_title(self.element.content[0]):
+            return False
+        if not self.check_h1_etc(self.element.content[1]):
             return False
         return True
 
@@ -67,10 +102,13 @@ class Page(Elem):
 
             
     def __str__(self):
-        return(f'{self.element.content}')
+        return(f'{str(self.element)}')
 
 def main(): 
-    test = Page(Html( [Head(content=Title(Text('hello'))), Body(Div(Div()))] ))
+    test = Page(Html([
+    Head(content=Title([Text('hello')])),
+    Body(H1([Text('hello')]))
+]))
     print(test.is_valid())
 
 
