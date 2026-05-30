@@ -1,8 +1,8 @@
 from elements import*
 
 
-ELEMENTS = ['html', 'head', 'body',
-'title', 'meta', 'img', 'table', 'th', 'tr', 'td' , 'ul', 'ol', 'li', 'h1', 'h2', 'p', 'div', 'span', 'hr', 'br']
+ELEMENTS = (Html, Head, Body,
+Title, Meta, Img, Table, Th, Tr, Td, Ul, Ol, Li, H1, H2, P, Div, Span, Hr, Br, Text)
 BODY_ELEMENTS = (H1, H2, Div, Table, Ul, Ol, Span, Text)
 TITLE_ETC_ELEMENTS = (Title, H1, H2, Li, Th, Td)
 
@@ -64,8 +64,10 @@ class Page():
 
     def check_body_and_head(self):
         body = head = 0
+        if self.balises[0] != 'html':
+            return False
         if self.balises[1] != 'head':
-            return(False)
+            return False
         for item in self.balises:
             if item == 'head':
                 head += 1
@@ -73,18 +75,27 @@ class Page():
                 body += 1
         return (body == 2 and head == 2)
 
-    def check_elements(self):
-        for item in self.balises:
-            if item not in ELEMENTS:
-                return (False)
-        return(True)
+    def check_elements(self, html_page):
+        if isinstance(html_page, Text):
+            return True
+        if html_page in (None, ''):
+            return True
+        if isinstance(html_page, ELEMENTS):
+            return self.check_elements(html_page.content)
+        if isinstance(html_page, list):
+            for item in html_page:
+                if not self.check_elements(item):
+                    return False
+            return True
+        return False
+    
 
     def checker(self):
-        html_page = str(self.element)
-        self.balises = [tag.split('>')[0].lstrip('/') for tag in html_page.split('<')[1:]]
+        html_page = self.element
+        self.balises = [tag.split('>')[0].lstrip('/') for tag in str(html_page).split('<')[1:]]
         if not self.check_body_and_head():
             return False
-        if not self.check_elements():
+        if not self.check_elements(html_page):
             return False
         if not self.check_head_and_title():
             return False
@@ -106,7 +117,7 @@ class Page():
 
 def main(): 
     test = Page(Html([
-    Head(content=Title([Text('hello')])),
+    Head(content=Title()),
     Body(H1([Text('hello')]))
 ]))
     print(test.is_valid())
