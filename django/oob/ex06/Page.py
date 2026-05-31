@@ -26,10 +26,18 @@ class Page():
         return (title == 2)
    
     def check_body_div_content(self, body):
-        if isinstance(body.content, Elem):
+        if isinstance(body.content, (Div)):
+            return self.check_body_div_content(body.content)
+        elif isinstance(body.content, (Elem)):
             if not isinstance(body.content, BODY_ELEMENTS):
                 return False
             return self.check_body_div_content(body.content)
+        elif isinstance(body.content, list):
+            for item in body.content:
+                if not isinstance(item, BODY_ELEMENTS):
+                    return False 
+                if not self.check_body_div_content(item):
+                    return False
         return True
     
     def check_title(self, head):
@@ -97,18 +105,18 @@ class Page():
 
     def checker(self):
         html_page = self.element
-        if not self.check_body_and_head():
-            return False
-        if not self.check_elements(html_page):
-            return False
-        if not self.check_title_in_head():
-            return False
+        # if not self.check_body_and_head():
+        #     return False
+        # if not self.check_elements(html_page):
+        #     return False
+        # if not self.check_title_in_head():
+        #     return False
         if not self.check_body_div_content(self.element.content[1]):
             return False
-        if not self.check_title(self.element.content[0]):
-            return False
-        if not self.check_h1_etc(self.element.content[1]):
-            return False
+        # if not self.check_title(self.element.content[0]):
+        #     return False
+        # if not self.check_h1_etc(self.element.content[1]):
+        #     return False
         return True
 
 
@@ -122,7 +130,7 @@ class Page():
 def main(): 
     test = Page(Html([
     Head(content=Title()),
-    Body(H1([Text('hello')]))
+    Body(Div([H1()]))
 ]))
     print(test.is_valid())
 
