@@ -12,8 +12,81 @@ class Page():
         self.balises = []
         self.text_title = 0
         self.text = 0
+        
+    def check_P_and_Span(self, element):
+        if element is None or isinstance(element, Text):
+            return True
+        
+        if isinstance(element, P):
+            if isinstance(element.content, list):
+                for item in element.content:
+                    if not isinstance(item, Text):
+                        return False
+            elif element.content is not None and not isinstance(element.content, Text):
+                return False
+            return True
+        
 
+        if isinstance(element, Span):
+            if isinstance(element.content, list):
+                for item in element.content:
+                    if not isinstance(item, (Text, P)):
+                        return False
 
+                    if isinstance(item, P) and not self.check_P_and_Span(item):
+                        return False
+            elif element.content is not None:
+                if not isinstance(element.content, (Text, P)):
+                    return False
+
+                if isinstance(element.content, P):
+                    if not self.check_P_and_Span(element.content):
+                        return False
+            return True
+        
+
+        if isinstance(element, Elem):
+            return self.check_P_and_Span(element.content)
+        
+
+        if isinstance(element, list):
+            for item in element:
+                if not self.check_P_and_Span(item):
+                    return False
+            return True
+        
+        return True
+    
+
+    def check_Ul_and_Ol(self, element):
+
+        if element is None or isinstance(element, Text):
+            return True
+        
+        if isinstance(element, (Ul, Ol)):
+            if isinstance(element.content, list):
+                if not element.content:
+                    return False
+                for item in element.content:
+                    if not isinstance(item, Li):
+                        return False
+            elif not isinstance(element.content, Li):
+                return False
+            elif element.content is None:
+                return False
+            return True
+        
+        if isinstance(element, Elem):
+            return self.check_Ul_and_Ol(element.content)
+        
+        if isinstance(element, list):
+            for item in element:
+                if not self.check_Ul_and_Ol(item):
+                    return False
+            return True
+        
+        return True
+    
     def check_title_in_head(self):
         title = 0
         head_block = str(self.element.content[0])
@@ -69,7 +142,8 @@ class Page():
 
         elif isinstance(body, list):
             for item in body:
-                self.check_h1_etc(item)
+                if not self.check_h1_etc(item):
+                    return False
         return True
 
 
@@ -105,18 +179,22 @@ class Page():
 
     def checker(self):
         html_page = self.element
-        # if not self.check_body_and_head():
-        #     return False
-        # if not self.check_elements(html_page):
-        #     return False
-        # if not self.check_title_in_head():
-        #     return False
+        if not self.check_body_and_head():
+            return False
+        if not self.check_elements(html_page):
+            return False
+        if not self.check_title_in_head():
+            return False
         if not self.check_body_div_content(self.element.content[1]):
             return False
-        # if not self.check_title(self.element.content[0]):
-        #     return False
-        # if not self.check_h1_etc(self.element.content[1]):
-        #     return False
+        if not self.check_title(self.element.content[0]):
+            return False
+        if not self.check_h1_etc(self.element.content[1]):
+            return False
+        if not self.check_P_and_Span(self.element.content[1]):
+            return False
+        if not self.check_Ul_and_Ol(self.element.content[1]):
+            return False
         return True
 
 
