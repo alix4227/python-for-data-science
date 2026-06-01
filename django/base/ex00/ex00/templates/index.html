@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Ex00 : Markdown Cheatsheet.</title>
+    <style>
+      span {
+        text-decoration: underline;
+         font-weight: lighter;
+      }
+
+      .titre {
+        text-align: center;
+        font-weight: lighter;
+      }
+      .titre h1,
+      .titre h2 {
+        margin: 0;
+      }
+      
+      i {
+        color: grey;
+        font-size:medium;
+      }
+      h3 {
+        font-family: Cambria;
+      }
+       h2 {
+        font-family: Cambria;
+         text-align: center;
+      }
+      p{
+        text-align: center;
+      }
+      table {
+        width: 90%;
+        max-width: 1000px;
+        margin: 20px auto;
+        table-layout: fixed;
+        border-collapse: collapse;
+        color: black;
+      }
+      th, td {
+        border: 1px solid;
+        padding: 8px 10px;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        vertical-align: top;
+      }
+      #sous_titre {
+        color: blue;
+        font-weight: 900;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>
+        OVERVIEW
+    </h2>
+    <p>
+    This Markdown cheat sheet provides a quick overview of all the Markdown syntax elements.<br>
+    It can’t cover every edge case, so if you need more information about any of these elements,<br> 
+    refer to the reference guides for basic syntax and extended syntax.   
+    </p>
+    <table>
+        <tr>
+            <th>Element</th>
+            <th>Markdown Syntax</th>
+        </tr>
+        <tr>
+          <td><a href="https://www.markdownguide.org/basic-syntax/#headings">Heading</a></td>
+          <td>
+          # H1<br>
+          ## H2<br>
+          ### H3<br>
+          </td>
+        </tr>
+        <tr>
+          <td><a href="https://www.markdownguide.org/basic-syntax/#bold">Bold</a></td>
+          <td>**bold text**</td>
+        </tr>
+        <tr>
+          <td><a href="https://www.markdownguide.org/basic-syntax/#italic">Italic</a></td>
+          <td>*italicized text*</td>
+        </tr>
+        <tr>
+          <td><a href="https://www.markdownguide.org/basic-syntax/#blockquotes-1">Blockquote</a></td>
+          <td>&gt; blockquote</td>
+        </tr>
+        <tr>
+          <td><a href="https://www.markdownguide.org/basic-syntax/#ordered-lists">Ordered List</a></td>
+          <td>
+          1. First item<br>
+          2. Second item<br>
+          3. Third item<br>
+          </td>
+        </tr>
+        <tr>
+          <td><a href="https://www.markdownguide.org/basic-syntax/#unordered-lists">Unordered List</a></td>
+          <td>
+          - First item<br>
+          - Second item<br>
+          - Third item<br>
+          </td>
+        </tr>
+        <tr>
+          <td><a href="https://www.markdownguide.org/basic-syntax/#code">Code</a></td>
+          <td><code>`code`</code></td>
+        </tr>
+        <tr>
+          <td><a href="https://www.markdownguide.org/basic-syntax/#horizontal-rules">Horizontal Rule</a></td>
+          <td>---</td>
+        </tr>
+        <tr>
+          <td><a href="https://www.markdownguide.org/basic-syntax/#links">Link</a></td>
+          <td>[title](https://www.example.com)</td>
+        </tr>
+        <tr>
+          <td><a href="https://www.markdownguide.org/basic-syntax/#images-1">Image</a></td>
+          <td>![alt text](image.jpg)</td>
+        </tr>
+    </table>
+    <table>
+    <h2>
+        Basic Syntax
+    </h2>
+    <p>
+   These are the elements outlined in John Gruber’s original design document. All Markdown applications support these elements.   
+    </p>
+      <tr>
+        <th>Element</th>
+        <th>Markdown Syntax</th>
+      </tr>
+      <tr>
+        <td><a href="https://www.markdownguide.org/extended-syntax/#tables">Table</a></td>
+        <td><pre>| Syntax      | Description |
+  | ----------- | ----------- |
+  | Header      | Title       |
+  | Paragraph   | Text        |</pre></td>
+      </tr>
+      <tr>
+        <td><a href="https://www.markdownguide.org/extended-syntax/#fenced-code-blocks">Fenced Code Block</a></td>
+        <td><pre>```
+  {
+    "firstName": "John",
+    "lastName": "Smith",
+    "age": 25
+  }
+  ```</pre></td>
+      </tr>
+      <tr>
+        <td><a href="https://www.markdownguide.org/extended-syntax/#footnotes">Footnote</a></td>
+        <td><pre>Here's a sentence with a footnote. [^1]
+
+  [^1]: This is the footnote.</pre></td>
+      </tr>
+      <tr>
+        <td><a href="https://www.markdownguide.org/extended-syntax/#heading-ids">Heading ID</a></td>
+        <td><pre>### My Great Heading {#custom-id}</pre></td>
+      </tr>
+      <tr>
+        <td><a href="https://www.markdownguide.org/extended-syntax/#definition-lists">Definition List</a></td>
+        <td><pre>term
+
+  : definition</pre></td>
+      </tr>
+      <tr>
+        <td><a href="https://www.markdownguide.org/extended-syntax/#strikethrough">Strikethrough</a></td>
+        <td><pre>~~The world is flat.~~</pre></td>
+      </tr>
+      <tr>
+        <td><a href="https://www.markdownguide.org/extended-syntax/#task-lists">Task List</a></td>
+        <td><pre>- [x] Write the press release
+  - [ ] Update the website
+  - [ ] Contact the media</pre></td>
+      </tr>
+      <tr>
+        <td><a href="https://www.markdownguide.org/extended-syntax/#emoji">Emoji</a></td>
+        <td><pre>That is so funny! :joy:</pre></td>
+      </tr>
+      <tr>
+        <td><a href="https://www.markdownguide.org/extended-syntax/#highlight">Highlight</a></td>
+        <td><pre>I need to highlight these ==very important words==.</pre></td>
+      </tr>
+      <tr>
+        <td><a href="https://www.markdownguide.org/extended-syntax/#subscript">Subscript</a></td>
+        <td><pre>H~2~O</pre></td>
+      </tr>
+      <tr>
+        <td><a href="https://www.markdownguide.org/extended-syntax/#superscript">Superscript</a></td>
+        <td><pre>X^2^</pre></td>
+      </tr>
+    </table>
+  </body>
+</html>
