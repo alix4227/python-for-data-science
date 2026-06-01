@@ -1,4 +1,5 @@
 asgiref==3.11.1
-Django==5.2.14
+Django==4.2.30
+django-browser-reload==1.15.0
 sqlparse==0.5.5
 typing_extensions==4.15.0

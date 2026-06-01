@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      
+      <title>
+         {% block title %}Page Title{% endblock %}
+      </title>
+      <style>
+        body { margin: 0; font-family: sans-serif; }
+
+        {% block style %}Custom styles{% endblock %}  
+      </style>
+      
+   </head>
+	
+   <body>
+   
+      {% block content %}
+         Body content
+      {% endblock %}
+      
+   </body>
+</html>
