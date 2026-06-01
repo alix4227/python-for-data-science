@@ -265,6 +265,7 @@ class Page():
 
     def checker(self):
         html_page = self.element
+        print(type(html_page))
         if not self.check_body_and_head():
             return False
         if not self.check_elements(html_page):
@@ -292,9 +293,19 @@ class Page():
 
     def is_valid(self):
         return(self.checker())
+    
+    def write_to_file(self, filename):
+        if not isinstance(filename, str):
+            return False
+        with open(filename, 'w') as file:
+            if isinstance(self.element, Html):
+                file.write(f'<!DOCTYPE html>\n{str(self.element)}')
+            file.write(f'{str(self.element)}')
 
             
     def __str__(self):
+        if isinstance(self.element, Html):
+            return(f'<!DOCTYPE html>\n{str(self.element)}')
         return(f'{str(self.element)}')
 
 def main(): 
@@ -302,7 +313,8 @@ def main():
     Head(content=Title()),
     Body(Div([Table([Tr(Th([Text(), Text()]))])]))
 ]))
-    print(test.is_valid())
+    print(test)
+    test.write_to_file('Alix.html')
 
 
 if __name__ == '__main__':
