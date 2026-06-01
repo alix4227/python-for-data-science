@@ -87,6 +87,71 @@ class Page():
         
         return True
     
+    def check_Tr(self, element):
+
+        if element is None or isinstance(element, Text):
+            return True
+        
+        if isinstance(element, Tr):
+            if isinstance(element.content, list):
+                countTh = 0
+                countTd = 0
+                if not element.content:
+                    return False
+                for item in element.content:
+                    if not isinstance(item, (Td, Th)):
+                        return False
+                    if isinstance(item, Td):
+                        countTd += 1
+                    if isinstance(item, Th):
+                        countTh += 1
+                if countTd  and countTh:
+                    return False
+            elif not isinstance(element.content, (Td, Th)):
+                return False
+            elif element.content is None:
+                return False
+            return True
+        
+        if isinstance(element, Elem):
+            return self.check_Tr(element.content)
+        
+        if isinstance(element, list):
+            for item in element:
+                if not self.check_Tr(item):
+                    return False
+            return True
+        
+        return True
+    
+    def check_Table(self, element):
+
+        if element is None or isinstance(element, Text):
+            return True
+        
+        if isinstance(element, Table):
+            if isinstance(element.content, list):
+                if not element.content:
+                    return False
+                for item in element.content:
+                    if not isinstance(item, Tr):
+                        return False
+            elif not isinstance(element.content, Tr):
+                return False
+            return True
+        
+        if isinstance(element, Elem):
+            return self.check_Table(element.content)
+        
+        if isinstance(element, list):
+            for item in element:
+                if not self.check_Table(item):
+                    return False
+            return True
+        
+        return True
+
+
     def check_title_in_head(self):
         title = 0
         head_block = str(self.element.content[0])
@@ -179,21 +244,25 @@ class Page():
 
     def checker(self):
         html_page = self.element
-        if not self.check_body_and_head():
+        # if not self.check_body_and_head():
+        #     return False
+        # if not self.check_elements(html_page):
+        #     return False
+        # if not self.check_title_in_head():
+        #     return False
+        # if not self.check_body_div_content(self.element.content[1]):
+        #     return False
+        # if not self.check_title(self.element.content[0]):
+        #     return False
+        # if not self.check_h1_etc(self.element.content[1]):
+        #     return False
+        # if not self.check_P_and_Span(self.element.content[1]):
+        #     return False
+        # if not self.check_Ul_and_Ol(self.element.content[1]):
+        #     return False
+        if not self.check_Tr(self.element.content[1]):
             return False
-        if not self.check_elements(html_page):
-            return False
-        if not self.check_title_in_head():
-            return False
-        if not self.check_body_div_content(self.element.content[1]):
-            return False
-        if not self.check_title(self.element.content[0]):
-            return False
-        if not self.check_h1_etc(self.element.content[1]):
-            return False
-        if not self.check_P_and_Span(self.element.content[1]):
-            return False
-        if not self.check_Ul_and_Ol(self.element.content[1]):
+        if not self.check_Table(self.element.content[1]):
             return False
         return True
 
@@ -208,7 +277,7 @@ class Page():
 def main(): 
     test = Page(Html([
     Head(content=Title()),
-    Body(Div([H1()]))
+    Body(Div([Tr([Th()])]))
 ]))
     print(test.is_valid())
 
