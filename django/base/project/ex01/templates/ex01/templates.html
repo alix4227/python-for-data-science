@@ -4,11 +4,53 @@
 {% block css %}<link rel="stylesheet" href="{% static 'ex01/style2.css' %}">{% endblock %}
 {% block title %}Ex01 : Moteur de template.{% endblock %}
 
-{% block style %}
-body { margin: 0;   font-family: sans-serif; }
-{% endblock %}
-
 {% block content %}
-<h2>Fonctionnement du moteur de template</h2>
+<h1>{{title}}</h1>
+{% verbatim %}
+  <p>
+    Le moteur de templates par défaut de Django permet de générer dynamiquement du HTML à partir de fichiers modèles appelés templates.
+    Il sépare la logique de présentation du reste de l’application en injectant des données dans des fichiers HTML.
+  </p>
+
+  <h2>Fonctionnement général</h2>
+  <p>
+    Une vue Django envoie un contexte (données sous forme de dictionnaire) à un template.
+    Le moteur de templates remplace ensuite les variables et interprète les instructions pour produire une page HTML finale envoyée au client.
+  </p>
+
+  <h2>Les blocs</h2>
+  <p>
+    Les blocs permettent l’héritage de templates. Un template parent définit des zones modifiables avec {% block %},
+    que les templates enfants peuvent redéfinir.
+  </p>
+
+  <p>Exemple :</p>
+  <p>{% block content %}...{% endblock %}</p>
+
+  <h2>Boucles for ... in</h2>
+  <p>
+    Les boucles permettent d’itérer sur des listes ou des collections passées dans le contexte.
+  </p>
+
+  <p>Exemple :</p>
+  <p>{% for item in liste %} {{ item }} {% endfor %}</p>
+
+  <h2>Structures de contrôle if</h2>
+  <p>
+    Les conditions permettent d’afficher du contenu en fonction de valeurs du contexte.
+  </p>
+
+  <p>Exemple :</p>
+  <p>{% if user %} Bonjour {{ user }} {% endif %}</p>
+
+  <h2>Affichage des variables du contexte</h2>
+  <p>
+    Les variables envoyées par la vue sont affichées avec la syntaxe {{ variable }}.
+    Le moteur remplace ces expressions par leur valeur lors du rendu.
+  </p>
+
+  <p>Exemple :</p>
+  <p>{{ nom }}</p>
+  {% endverbatim %}
 
 {% endblock %}

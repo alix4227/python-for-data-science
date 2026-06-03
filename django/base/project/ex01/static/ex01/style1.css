@@ -1,4 +1,9 @@
 body
 {
+    margin-left: 15px;
     color:blue
+}
+
+p {
+  margin-bottom: 15px;
 }
