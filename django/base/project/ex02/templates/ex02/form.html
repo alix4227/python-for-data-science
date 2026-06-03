@@ -1,0 +1,28 @@
+{% extends "ex02/base.html" %}
+{% block title %}Ex02: Form{% endblock %}
+{% block content %}
+<center>
+<h1 style = "margin-left:4%;">{{title}}</h1>
+<form name = "form" action="{% url 'form' %}" method="post">{% csrf_token %}
+    <div style = "max-width:470px;">
+            <center> 
+            {{form.username}}
+            </center>
+    </div>
+    <div style = "max-width:470px;">
+        <center> 
+            
+            <button 
+                style = "border:0px; background-color:#4285F4; margin-top:8%;
+                height:35px; width:90%;margin-left:19%;" type = "submit" 
+                value = "Login"
+            >
+                <strong>Login</strong>
+            </button>
+               
+        </center>
+    </div>   
+</form>
+</center>
+
+{% endblock %}
