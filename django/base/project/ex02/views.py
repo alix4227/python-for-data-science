@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.utils import timezone
 from ex02.forms import LoginForm
 def form(request):
     title = 'Text Area'
@@ -7,8 +8,9 @@ def form(request):
       
       if MyLoginForm.is_valid():
         text = MyLoginForm.cleaned_data['text']
-        with open("ex02/logs.py", 'w') as file:
-            file.write(text)
+        timestamp = timezone.now().strftime('%Y-%m-%d %H:%M:%S')
+        with open("ex02/logs.txt", 'a') as file:
+            file.write(f"[{timestamp}]{text+'\n'}")
 
     else:
         MyLoginForm = LoginForm()
