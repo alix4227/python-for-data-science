@@ -3,7 +3,7 @@
 {% block content %}
 <center>
 <h1 style = "margin-left:4%;">{{title}}</h1>
-<form name = "form" action="{% url 'form' %}" method="post">{% csrf_token %}
+<form name = "form" method="post">{% csrf_token %}
     <div style = "max-width:470px;">
             <center> 
             {{form.text}}
@@ -23,6 +23,14 @@
         </center>
     </div>   
 </form>
+<h2 style = "margin-left:4%;">Historique</h2>
+    {%if logs%}
+    {%for log in logs%}
+    <div>
+        <p>{{log}}</p>
+    </div>
+{%endfor%}
+{%endif%}
 </center>
 
 {% endblock %}
