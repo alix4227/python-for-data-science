@@ -16,7 +16,7 @@ def form(request):
             text = MyLoginForm.cleaned_data['text']
             timestamp = timezone.now().strftime('%Y-%m-%d %H:%M:%S')
             with open(settings.LOG_FILE, 'a') as file:
-                file.write(f"[{timestamp}]{text+'\n'}")
+                file.write(f"[{timestamp}]{text + '\n'}")
             with open(settings.LOG_FILE, 'r') as file2:
                 logs = file2.readlines()
             MyLoginForm = LoginForm()

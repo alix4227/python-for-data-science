@@ -1,0 +1,16 @@
+        table {
+        width: 90%;
+        max-width: 1000px;
+        margin: 20px auto;
+        table-layout: fixed;
+        border-collapse: collapse;
+        color: rgb(250, 5, 5);
+      }
+      th, td {
+        border: 1px solid;
+        padding: 8px 10px;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        vertical-align: top;
+      }
+     
