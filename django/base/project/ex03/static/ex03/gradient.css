@@ -4,7 +4,7 @@
         margin: 20px auto;
         table-layout: fixed;
         border-collapse: collapse;
-        color: rgb(250, 5, 5);
+        border: 1px solid;
       }
       th, td {
         border: 1px solid;

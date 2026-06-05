@@ -1,12 +1,5 @@
 {% extends "ex03/base.html" %}
 {% block title %}Ex03: Gradient{% endblock %}
-{%block style%}
-    <style>
-                td:nth-child(1) {
-                background: {{ rgb }};
-            }
-    </style> 
-{%endblock%}
 {% block content %}
 <center>
     <h1 style="margin-left:4%;">{{ title }}</h1>
@@ -17,9 +10,14 @@
             <th>Blue</th>
             <th>Green</th>
         </tr>
-        {% for i in range %}
-            {% include "ex03/table.html" %}
-        {% endfor %}
+        {%for row in table%}
+        <tr>
+            {%for cell in row%}
+            <td style="height: 40px; width: 80px; background:{{cell}};"></td>
+            {%endfor%}
+        </tr>
+        {%endfor%}
     </table>
+    
 </center>
 {% endblock %}
