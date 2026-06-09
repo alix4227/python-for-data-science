@@ -13,7 +13,7 @@ def get_page_content(title):
         return None
     return(response.text)
 
-def road_to_philo(search, count):
+def road_to_philo(search, count, list_titles):
 
     html = get_page_content(search)
     if html is None:
@@ -21,6 +21,10 @@ def road_to_philo(search, count):
         sys.exit(1)
     soup = BeautifulSoup(html, "html.parser")
     main_title = soup.find('span', class_='mw-page-title-main')
+    if main_title.string in list_titles:
+        print('It leads to an infinite loop !')
+        sys.exit(1)
+    list_titles.append(main_title)
     print(main_title.string)
     count += 1
     if main_title.string == 'Philosophy':
@@ -28,9 +32,11 @@ def road_to_philo(search, count):
     div = soup.find('div', id='bodyContent')
     for p in div.find_all('p'):
         link = p.find('a', class_=lambda c: not c or 'mw-disambig' not in c, href=lambda h: h and h.startswith('/wiki/'))
+        if link and link.get('class'):
+           count += 1
         if link:
             search_title = link['title']
-            return road_to_philo(search_title, count)
+            return road_to_philo(search_title, count, list_titles)
     return None
 
 def main(args):
@@ -38,8 +44,8 @@ def main(args):
     if (len(args) != 2):
         print("Wrong number of arguments")
         return 1
-    nombre = road_to_philo(args[1], count = 0)
-    print(f'{nombre + 1 } roads from {args[1]} to philosophy')
+    nombre = road_to_philo(args[1], count = 0, list_titles = [])
+    print(f'{nombre} roads from {args[1]} to philosophy')
 
             
            
