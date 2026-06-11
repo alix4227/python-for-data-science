@@ -9,7 +9,7 @@ def index(request):
         user="djangouser",
         password="secret",
         host="localhost",
-        port="5433"
+        port="5432"
     )
 
         cur = conn.cursor()
