@@ -9,21 +9,11 @@ def init(request):
         user="djangouser",
         password="secret",
         host="localhost",
-        port="5432"
+        port="5433"
     )
 
         cur = conn.cursor()
 
-        cur.execute("""
-            CREATE TABLE IF NOT EXISTS ex02_movies (
-                title           VARCHAR(100) NOT NULL UNIQUE,
-                episode_nb      INTEGER PRIMARY KEY,
-                opening_crawl   TEXT,
-                director        VARCHAR(32) NOT NULL,
-                producer        VARCHAR(128) NOT NULL,
-                release_date    DATE NOT NULL
-            )
-        """)
         cur.execute("""
             CREATE TABLE IF NOT EXISTS ex02_movies (
                 title           VARCHAR(100) NOT NULL UNIQUE,
@@ -53,7 +43,7 @@ def populate(request):
         user="djangouser",
         password="secret",
         host="localhost",
-        port="5432"
+        port="5433"
     )
 
         cur = conn.cursor()
@@ -83,14 +73,16 @@ def populate(request):
 
 def display(request):
     conn = None
-    table = ['title','episode_nb','opening_crawl', 'director', 'producer', 'release_date']
+    titles = ['title','episode_nb','opening_crawl', 'director', 'producer', 'release_date']
+    table = []
+    result = ''
     try:
         conn = psycopg2.connect(
         dbname="formationdjango",
         user="djangouser",
         password="secret",
         host="localhost",
-        port="5432"
+        port="5433"
     )
 
         cur = conn.cursor()
@@ -98,16 +90,13 @@ def display(request):
             SELECT *
             FROM ex02_movies;
         """)
-        rows = cur.fetchall()
-        for i in range(4):
-            table[i] = [row[i] for row in rows]
-            print(table[1])
+        table = cur.fetchall()
+        result = "No data available"
         cur.close()
         conn.close()
-        result = 'OK'
    
-    except psycopg2.Error as e:
+    except psycopg2.Error:
         if conn:
             conn.rollback()
-        result = e
-    return render(request, 'ex02/index.html', {"result": result, "table": table})
+        result = "No data available"
+    return render(request, 'ex02/index.html', {"result": result, "table": table, "titles": titles})

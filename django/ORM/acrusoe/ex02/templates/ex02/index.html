@@ -53,11 +53,26 @@
     </style>
   </head>
   <body>
-    {% for row in table %}
-    <h2>
-        {%for item in row%}
-        {{item}}
-    </h2>
-    {% endfor %}
-    {% endfor %}
+  <center>
+    {% if not table %}
+        <h2>{{result}}</h2>
+    {% else %}
+        <h1 style="margin-left:4%;">{{ title }}</h1>
+        <table>
+            <tr>
+                {%for title in titles%}
+                <th>{{title}}</th>
+                {%endfor%}
+            </tr>
+            {%for row in table%}
+            <tr>
+                {%for cell in row%}
+                <td style="height: 40px; width: 80px;">{{cell}}</td>
+                {%endfor%}
+            </tr>
+            {%endfor%}
+        </table>
+    {%endif%}
+</center>
+</body>
 </html>

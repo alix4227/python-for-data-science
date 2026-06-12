@@ -24,6 +24,11 @@ share/python-wheels/
 MANIFEST
 pip-log.txt
 pip-delete-this-directory.txt
+*.pyo
+*.pyd
+.mypy_cache/
+.dmypy.json
+dmypy.json
 
 # Virtual environments
 venv/
@@ -31,6 +36,7 @@ ENV/
 env/
 .venv
 .env
+django_venv/
 
 # IDE
 .vscode/
@@ -38,8 +44,6 @@ env/
 *.swp
 *.swo
 *~
-.DS_Store
-Thumbs.db
 
 # Django
 *.log
@@ -49,11 +53,25 @@ db.sqlite3-journal
 /media
 /staticfiles
 /static
+migrations/
+!migrations/__init__.py
 
 # Testing
 .coverage
 .pytest_cache/
 htmlcov/
+.tox/
+.hypothesis/
+
+# Output files
+*.output
+*.out
+*.log
+*.tmp
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+*.ipynb_checkpoints
 
 # Node (if needed)
 node_modules/
@@ -69,6 +87,14 @@ Thumbs.db
 ehthumbs.db
 Desktop.ini
 
-# OS
+# System files
+*.swp~
+*~.nib
+._*
 .Spotlight-V100
 .Trashes
+
+# Local configuration
+.env.local
+*.local
+config.local.py
