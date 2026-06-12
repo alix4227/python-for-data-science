@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Ex00 : Markdown Cheatsheet.</title>
+    <style>
+      span {
+        text-decoration: underline;
+         font-weight: lighter;
+      }
+
+      .titre {
+        text-align: center;
+        font-weight: lighter;
+      }
+      .titre h1,
+      .titre h2 {
+        margin: 0;
+      }
+      
+      i {
+        color: grey;
+        font-size:medium;
+      }
+      h3 {
+        font-family: Cambria;
+      }
+       h2 {
+        font-family: Cambria;
+         text-align: center;
+      }
+      p{
+        text-align: center;
+      }
+      table {
+        width: 90%;
+        max-width: 1000px;
+        margin: 20px auto;
+        table-layout: fixed;
+        border-collapse: collapse;
+        color: black;
+      }
+      th, td {
+        border: 1px solid;
+        padding: 8px 10px;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        vertical-align: top;
+      }
+      #sous_titre {
+        color: blue;
+        font-weight: 900;
+      }
+    </style>
+  </head>
+  <body>
+  <center>
+      <label for="movie-select">Choisissez un film&nbsp;:</label>
+
+      <select name="movies" id="movie-select">
+        <option value="">--Veuillez choisir une option--</option>
+        {%for title in titles%}
+          <option value={title}>{{title}}</option>
+        {%endfor%}
+      </select>
+      <button>Remove</button>
+  </center>
+  </body>
+</html>

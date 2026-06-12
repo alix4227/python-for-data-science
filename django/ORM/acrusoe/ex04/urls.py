@@ -1,5 +1,5 @@
 """
-URL configuration for d2 project.
+URL configuration for Django project.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/6.0/topics/http/urls/
@@ -15,12 +15,11 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
-
+from django.urls import path
+from . import views
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path("ex00/", include("ex00.urls")),
-    path("ex02/", include("ex02.urls")),
-    path("ex03/", include("ex03.urls")),
-    path("ex04/", include("ex04.urls")),
+     path("init", views.init, name="init"),
+    path("populate", views.populate, name="populate"),
+    path("display", views.display, name="display"),
+    path("remove", views.remove, name="remove"),
 ]

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Ex00 : Markdown Cheatsheet.</title>
+    <style>
+      span {
+        text-decoration: underline;
+         font-weight: lighter;
+      }
+
+      .titre {
+        text-align: center;
+        font-weight: lighter;
+      }
+      .titre h1,
+      .titre h2 {
+        margin: 0;
+      }
+      
+      i {
+        color: grey;
+        font-size:medium;
+      }
+      h3 {
+        font-family: Cambria;
+      }
+       h2 {
+        font-family: Cambria;
+         text-align: center;
+      }
+      p{
+        text-align: center;
+      }
+      table {
+        width: 90%;
+        max-width: 1000px;
+        margin: 20px auto;
+        table-layout: fixed;
+        border-collapse: collapse;
+        color: black;
+      }
+      th, td {
+        border: 1px solid;
+        padding: 8px 10px;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        vertical-align: top;
+      }
+      #sous_titre {
+        color: blue;
+        font-weight: 900;
+      }
+    </style>
+  </head>
+  <body>
+  <center>
+    {% if not table %}
+        <h2>{{result}}</h2>
+    {% else %}
+        <table>
+            <tr>
+                {%for title in titles%}
+                <th>{{title}}</th>
+                {%endfor%}
+            </tr>
+            {%for row in table%}
+            <tr>
+                {%for cell in row%}
+                <td style="height: 40px; width: 80px;">{{cell}}</td>
+                {%endfor%}
+            </tr>
+            {%endfor%}
+        </table>
+    {%endif%}
+</center>
+</body>
+</html>
