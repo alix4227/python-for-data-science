@@ -84,6 +84,7 @@ def populate(request):
 def display(request):
     conn = None
     titles = ['title','episode_nb','opening_crawl', 'director', 'producer', 'release_date']
+    table = []
     try:
         conn = psycopg2.connect(
         dbname="formationdjango",
@@ -101,10 +102,10 @@ def display(request):
         table = cur.fetchall()
         cur.close()
         conn.close()
-        result = 'OK'
-   
+        result = "No data available"
+        
     except psycopg2.Error as e:
         if conn:
             conn.rollback()
-        result = e
+        result = "No data available"
     return render(request, 'ex02/index.html', {"result": result, "titles": titles, "table": table})
