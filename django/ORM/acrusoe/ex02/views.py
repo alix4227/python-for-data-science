@@ -9,11 +9,21 @@ def init(request):
         user="djangouser",
         password="secret",
         host="localhost",
-        port="5433"
+        port="5432"
     )
 
         cur = conn.cursor()
 
+        cur.execute("""
+            CREATE TABLE IF NOT EXISTS ex02_movies (
+                title           VARCHAR(100) NOT NULL UNIQUE,
+                episode_nb      INTEGER PRIMARY KEY,
+                opening_crawl   TEXT,
+                director        VARCHAR(32) NOT NULL,
+                producer        VARCHAR(128) NOT NULL,
+                release_date    DATE NOT NULL
+            )
+        """)
         cur.execute("""
             CREATE TABLE IF NOT EXISTS ex02_movies (
                 title           VARCHAR(100) NOT NULL UNIQUE,
@@ -43,7 +53,7 @@ def populate(request):
         user="djangouser",
         password="secret",
         host="localhost",
-        port="5433"
+        port="5432"
     )
 
         cur = conn.cursor()
@@ -74,15 +84,13 @@ def populate(request):
 def display(request):
     conn = None
     titles = ['title','episode_nb','opening_crawl', 'director', 'producer', 'release_date']
-    table = []
-    result = ''
     try:
         conn = psycopg2.connect(
         dbname="formationdjango",
         user="djangouser",
         password="secret",
         host="localhost",
-        port="5433"
+        port="5432"
     )
 
         cur = conn.cursor()
@@ -91,12 +99,12 @@ def display(request):
             FROM ex02_movies;
         """)
         table = cur.fetchall()
-        result = "No data available"
         cur.close()
         conn.close()
+        result = 'OK'
    
-    except psycopg2.Error:
+    except psycopg2.Error as e:
         if conn:
             conn.rollback()
-        result = "No data available"
-    return render(request, 'ex02/index.html', {"result": result, "table": table, "titles": titles})
+        result = e
+    return render(request, 'ex02/index.html', {"result": result, "titles": titles, "table": table})
