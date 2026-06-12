@@ -8,7 +8,7 @@ def init(request):
         user="djangouser",
         password="secret",
         host="localhost",
-        port="5432"
+        port="5433"
     )
 
         cur = conn.cursor()
@@ -44,7 +44,7 @@ def populate(request):
         user="djangouser",
         password="secret",
         host="localhost",
-        port="5432"
+        port="5433"
     )
 
         cur = conn.cursor()
@@ -61,7 +61,8 @@ def populate(request):
         for movie in movies:
             cur.execute("""
                 INSERT INTO ex04_movies (title, episode_nb, director, producer, release_date)
-                VALUES (%s, %s, %s, %s, %s);
+                VALUES (%s, %s, %s, %s, %s)
+                ON CONFLICT (title) DO NOTHING;        
             """,  movie)
             result.append('OK')
             conn.commit()
@@ -84,7 +85,7 @@ def display(request):
         user="djangouser",
         password="secret",
         host="localhost",
-        port="5432"
+        port="5433"
     )
 
         cur = conn.cursor()
@@ -95,6 +96,8 @@ def display(request):
         table = cur.fetchall()
         cur.close()
         conn.close()
+        if request.method == 'POST':
+            print('ALIX')
         result = "No data available"
         
     except psycopg2.Error as e:
@@ -114,15 +117,21 @@ def remove(request):
         user="djangouser",
         password="secret",
         host="localhost",
-        port="5432"
+        port="5433"
     )
-
         cur = conn.cursor()
+        if request.method == "POST":
+            movie_selected = request.POST.get('movies')
+            cur.execute("""
+                DELETE FROM ex04_movies
+                WHERE title = %s;
+            """, [movie_selected])
         cur.execute("""
             SELECT title
             FROM ex04_movies;
         """)
         titles = [row[0] for row in cur.fetchall()]
+        conn.commit()
         cur.close()
         conn.close()
         result = "No data available"

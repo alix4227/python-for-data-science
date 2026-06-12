@@ -54,15 +54,18 @@
   </head>
   <body>
   <center>
+    <form method="POST" action="{% url 'remove' %}">
+        {% csrf_token %}
       <label for="movie-select">Choisissez un film&nbsp;:</label>
 
       <select name="movies" id="movie-select">
         <option value="">--Veuillez choisir une option--</option>
         {%for title in titles%}
-          <option value={title}>{{title}}</option>
+          <option value='{{title}}'>{{title}}</option>
         {%endfor%}
       </select>
-      <button>Remove</button>
+      <button type="submit">Remove</button>
+    </form>
   </center>
   </body>
 </html>

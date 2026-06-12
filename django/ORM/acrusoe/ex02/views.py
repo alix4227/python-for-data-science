@@ -9,7 +9,7 @@ def init(request):
         user="djangouser",
         password="secret",
         host="localhost",
-        port="5432"
+        port="5433"
     )
 
         cur = conn.cursor()
@@ -53,7 +53,7 @@ def populate(request):
         user="djangouser",
         password="secret",
         host="localhost",
-        port="5432"
+        port="5433"
     )
 
         cur = conn.cursor()
@@ -91,7 +91,7 @@ def display(request):
         user="djangouser",
         password="secret",
         host="localhost",
-        port="5432"
+        port="5433"
     )
 
         cur = conn.cursor()
