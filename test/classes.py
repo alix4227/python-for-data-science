@@ -22,12 +22,71 @@ class Qrcode(Document):
     def fill_id_elements(self):
         for key, value in zip(self.id_elements.keys(), self.qrcode_info):
             if key == 'Firstname':
-                value = value.lstrip('E')
+                value = value.lstrip('E').replace('-', ' ')
             if key in ('Date_of_birth', 'Expiration_date'):
                 value = value.replace('/', ' ')
             if key == 'Height':
                 value = value.strip('S')
             self.id_elements[key] = value
+
+class MRZ(Document):
+    def __init__(self):
+        super().__init__()
+        self.mrz_info =""
+        self.id_elements = {
+           "Firstname": "", "Name": "", "Date_of_birth": "", "Document_number": "", 
+            "Expiration_date": "", "Nationality": "", "Type_of_document": "", 
+            "Sex": ""
+        }
+
+    def get_mrz_info(self, document):
+        with open(document, "r") as file:
+            self.mrz_info = json.load(file)
+            self.mrz_info = self.mrz_info['text']['page_2']
+            self.mrz_info = re.search(r'FRANCAISE\s+(.+)', self.mrz_info).group(1)
+            self.mrz_info = [item.lstrip() for item in self.mrz_info.split('<') if item.strip()]
+
+    def parse_name_and_firstnames(self, names):
+        if names:
+            self.id_elements['Name'] = re.sub(r'[^A-Z]', '', names[0]) 
+            self.id_elements['Firstname'] = ' '.join(names[1:]) if len(names) > 1 else ""
+        else:
+            self.id_elements['Name'] = ""
+            self.id_elements['Firstname'] = ""
+
+    def parse_document_type_and_number(self, string):
+        document_number = re.search(r'IDFRA(.+)', string)
+        self.id_elements['Document_number'] = document_number.group(1)[:-1] if document_number else ""
+        
+        if string.find('IDFRA') != 1:
+            self.id_elements['Type_of_document'] = 'CNI'
+
+    def parse_dates_and_sex(self, string):
+        date_of_birth = re.search(r"(\d{2}\d{2}\d{2})", string) 
+        self.id_elements['Date_of_birth'] = date_of_birth.group(1) if date_of_birth else ""
+        self.id_elements['Date_of_birth'] = f"{self.id_elements['Date_of_birth'][4:6]} {self.id_elements['Date_of_birth'][2:4]} 19{self.id_elements['Date_of_birth'][0:2]}"
+        
+        if (string[7] == 'F'):
+            self.id_elements['Sex'] = 'F'
+        elif (string[7] == 'M'):
+            self.id_elements['Sex'] = 'M'
+        
+        expiration_date = re.search(r"(\d{2}\d{2}\d{2})", string[7:])
+        self.id_elements['Expiration_date'] = expiration_date.group(1) if expiration_date else ""
+        self.id_elements['Expiration_date'] = f"{self.id_elements['Expiration_date'][4:6]} {self.id_elements['Expiration_date'][2:4]} 20{self.id_elements['Expiration_date'][0:2]}"
+        if (string.find('FRA')) != 1:
+            self.id_elements['Nationality'] = 'FRA'
+    
+    def fill_id_elements(self):
+        mrz_parts = {
+           "Document_type_and_number": self.mrz_info[0], 
+           "Dates_and_sex": self.mrz_info[1],
+           "Names": self.mrz_info[2:]
+        }
+        self.parse_name_and_firstnames(mrz_parts['Names'])
+        self.parse_document_type_and_number(mrz_parts['Document_type_and_number'])
+        self.parse_dates_and_sex(mrz_parts['Dates_and_sex'])
+           
 
 class CNI(Document):
     def __init__(self):
@@ -44,6 +103,7 @@ class CNI(Document):
 
         firstname = re.search(r"Given names\s+(.+?) SEXE", self.cni_info)
         self.id_elements['Firstname'] = firstname.group(1) if firstname else ""
+        self.id_elements['Firstname'] = self.id_elements['Firstname'].replace(',', '').replace('-', ' ')
         
         document_number = re.search(r"Document No.\s+(\w+)", self.cni_info)
         self.id_elements['Document_number'] = document_number.group(1) if document_number else ""

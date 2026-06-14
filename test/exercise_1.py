@@ -21,12 +21,14 @@ def main(args):
         qrcode = Qrcode()
         qrcode.get_qrcode_info(args[1])
         qrcode.fill_id_elements()
+        print(qrcode.id_elements)
 
         Cni = CNI()
         Cni.get_cni_info(args[2])
         Cni.fill_id_elements()
 
         test(Cni, qrcode)
+        print(Cni.id_elements)
     except (FileNotFoundError, json.JSONDecodeError):
         print("Reading error")
     except Exception:
