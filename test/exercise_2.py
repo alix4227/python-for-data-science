@@ -1,4 +1,4 @@
-from classes import CNI,Qrcode,MRZ
+from classes import CNI,MRZ
 import sys
 import json
 

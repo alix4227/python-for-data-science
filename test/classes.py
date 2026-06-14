@@ -6,7 +6,7 @@ class Document(ABC):
         self.id_elements = {
            "Firstname": "", "Name": "", "Date_of_birth": "", "Document_number": "", 
             "Expiration_date": "", "Nationality": "", "Type_of_document": "", 
-            "Sex": "", "Place_of_birth": "", "Height": ""
+            "Sex": "", "Place_of_birth": "", "Height": "", "Date_of_issue": ""
         }
     
 class Qrcode(Document):
@@ -128,3 +128,6 @@ class CNI(Document):
         
         height = re.search(r"Height\s+(.+?)m", self.cni_info)
         self.id_elements['Height'] = height.group(1).strip() if height else ""
+
+        delivrary = re.search(r"Date of issue\s+(\d{2} \d{2} \d{4})", self.cni_info)
+        self.id_elements['Date_of_issue'] = delivrary.group(1).strip() if height else ""
