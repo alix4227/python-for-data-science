@@ -2,6 +2,7 @@ from classes import CNI
 import sys
 import json
 from datetime import datetime
+from dateutil.relativedelta import relativedelta
 
 
 def test(Cni):
@@ -19,6 +20,13 @@ def test(Cni):
             file.write("Dates: Dates' coherence\n")
         else:
             file.write("Dates: Dates' incoherency\n")
+        diff = relativedelta(expiration_date_formated, date_of_issue_formated)
+
+        if diff.years == 10 and diff.months == 0 and diff.days == 0:
+            file.write("Delay: Dates' coherence\n")
+        else:
+            file.write("Delay: Dates' incoherency\n")
+        print('Test Done! Open report.txt')
                 
 def main(args):
     if len(args) != 2:
@@ -31,8 +39,6 @@ def main(args):
         Cni = CNI()
         Cni.get_cni_info(args[1])
         Cni.fill_id_elements()
-        print(Cni.id_elements)
-
         test(Cni)
     except (FileNotFoundError, json.JSONDecodeError):
         print("Reading error")

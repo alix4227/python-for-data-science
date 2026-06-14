@@ -2,6 +2,7 @@ from classes import CNI,MRZ
 import sys
 import json
 
+
 def test(Cni, mrz):
     with open('report.txt', 'w') as file:
         for key in mrz.id_elements.keys():
@@ -21,14 +22,13 @@ def main(args):
         mrz = MRZ()
         mrz.get_mrz_info(args[1])
         mrz.fill_id_elements()
-        print(mrz.id_elements)
 
         Cni = CNI()
         Cni.get_cni_info(args[1])
         Cni.fill_id_elements()
-        print(Cni.id_elements)
 
         test(Cni, mrz)
+        print('Test Done! Open report.txt')
     except (FileNotFoundError, json.JSONDecodeError):
         print("Reading error")
     except Exception:

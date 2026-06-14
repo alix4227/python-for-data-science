@@ -1,6 +1,8 @@
 import json
 import re
 from abc import ABC
+
+
 class Document(ABC):
     def __init__(self):
         self.id_elements = {
