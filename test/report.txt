@@ -1,0 +1,10 @@
+Firstname: No matching Firstname
+Name: OK
+Date_of_birth: OK
+Document_number: No matching Document_number
+Expiration_date: OK
+Nationality: No matching Nationality
+Type_of_document: OK
+Sex: OK
+Place_of_birth: No matching Place_of_birth
+Height: No matching Height
