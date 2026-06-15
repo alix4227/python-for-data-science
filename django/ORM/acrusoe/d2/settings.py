@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'ex03',
     'ex04',
     'ex05',
+    'ex06',
     'ex07'
 ]
 
@@ -119,7 +120,7 @@ TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)
