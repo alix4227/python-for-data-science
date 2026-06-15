@@ -96,8 +96,6 @@ def display(request):
         table = cur.fetchall()
         cur.close()
         conn.close()
-        if request.method == 'POST':
-            print('ALIX')
         result = "No data available"
         
     except psycopg2.Error as e:

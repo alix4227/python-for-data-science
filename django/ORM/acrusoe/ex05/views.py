@@ -26,11 +26,28 @@ def populate(request):
             results.append('OK')
         except Exception as e:
             results.append(str(e))
-    return render(request, 'ex03/populate.html', {"results": results})
+    return render(request, 'ex05/populate.html', {"results": results})
 
 def display(request):
     result = 'No data available'
     films = []
     films = Movies.objects.all()
     headers = ['episode_nb','title','director', 'producer', 'release_date', 'opening_crawl']
-    return render(request, 'ex03/display.html', {"films": films, "result": result, "headers": headers})
+    return render(request, 'ex05/display.html', {"films": films, "result": result, "headers": headers})
+
+
+def remove(request):
+    titles = []
+    result = ''
+    try:
+        if request.method == "POST":
+            value = request.POST.get('movies')
+            movie = Movies.objects.get(title=value)
+            movie.delete()
+        titles = Movies.objects.values_list('title', flat=True)
+        result = "No data available"
+        
+    except Exception:
+        result = "No data available"
+    return render(request, 'ex05/remove.html', {"result": result, "titles": titles})
+   

@@ -54,21 +54,9 @@
   </head>
   <body>
   <center>
-    {% if not titles %}
-        <h2>{{result}}</h2>
-    {% else %}
-    <form method="POST" action="{% url 'remove' %}">
-        {% csrf_token %}
-      <label for="movie-select">Choisissez un film&nbsp;:</label>
-
-      <select name="movies" id="movie-select">
-        <option value="">--Veuillez choisir une option--</option>
-        {%for title in titles%}
-          <option value='{{title}}'>{{title}}</option>
-        {%endfor%}
-      </select>
-      <button type="submit">Remove</button>
-    </form>
+      {%for result in results%}
+        {{result}}
+      {%endfor%} 
   </center>
   </body>
 </html>
