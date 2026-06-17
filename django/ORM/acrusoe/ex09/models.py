@@ -24,7 +24,7 @@ class People(models.Model):
     gender = models.CharField(max_length=32, null=True, blank=True)
     eye_color = models.CharField(max_length=32, null=True, blank=True)
     hair_color = models.CharField(max_length=32, null=True, blank=True)
-    heigth = models.IntegerField(null=True, blank=True)
+    height = models.IntegerField(null=True, blank=True)
     mass = models.FloatField(null=True, blank=True)
     homeworld = models.ForeignKey(Planets, to_field= 'name', on_delete=models.CASCADE, null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
