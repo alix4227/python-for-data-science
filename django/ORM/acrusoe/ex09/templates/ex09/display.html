@@ -54,7 +54,7 @@
   </head>
   <body>
   <center>
-    {% if not films %}
+    {% if not people %}
         <h2>{{result}}</h2>
     {% else %}
         <table>
@@ -63,16 +63,11 @@
                 <th>{{header}}</th>
                 {%endfor%}
             </tr>
-            {%for film in films%}
+            {%for p in people%}
             <tr>
-                <td style="height: 40px; width: 80px;">{{film.episode_nb}}</td>
-                <td style="height: 40px; width: 80px;">{{film.title}}</td>
-                <td style="height: 40px; width: 80px;">{{film.director}}</td>
-                <td style="height: 40px; width: 80px;">{{film.producer}}</td>
-                <td style="height: 40px; width: 80px;">{{film.release_date}}</td>
-                <td style="height: 40px; width: 80px;">{{film.opening_crawl}}</td>
-                <td style="height: 40px; width: 80px;">{{film.created}}</td>
-                <td style="height: 40px; width: 80px;">{{film.updated}}</td>
+                <td style="height: 40px; width: 80px;">{{p.name}}</td>
+                <td style="height: 40px; width: 80px;">{{p.homeworld}}</td>
+                <td style="height: 40px; width: 80px;">{{p.homeworld.climate}}</td>
             </tr>
             {%endfor%}
         </table>
