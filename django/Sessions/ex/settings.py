@@ -118,3 +118,4 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 USER_NAMES = ['Alix', 'Bill', 'Hello', 'Orel', 'Sara', 'Lio', 'Quentin', 'Laura', 'Ella', 'Ello']
+AUTH_USER_MODEL = 'app.User'
