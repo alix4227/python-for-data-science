@@ -55,7 +55,7 @@
   <body>
   <center>
     {% if not results %}
-        <h2>{{results}}</h2>
+        <h2>{{error_message}}</h2>
     {% else %}
     <form method="POST" action="{% url 'index' %}">
         {% csrf_token %}
@@ -76,7 +76,7 @@
         <ul>
             {%for character in results%}
             <div>
-                {{character.name}} {{character.gender}} {{character.title}} {{character.homeworld}} {{character.diameter}}
+                {{character.name}}-{{character.gender}}-{{character.title}}-{{character.homeworld}}-{{character.diameter}}
             </div>
              {%endfor%}
         </ul>

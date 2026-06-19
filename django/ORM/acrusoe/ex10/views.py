@@ -6,6 +6,7 @@ import json
 
 def index(request):
     results = ['']
+    error_message = "Nothing corresponding to your research"
     planets, people, movies, planet = [], [], [], []
     colonnes_planets = ['name', 'climate', 'diameter', 'orbital_period', 'population', 'rotation_period', 'surface_water', 'terrain']
     colonnes_people = ['name', 'birth_year', 'gender', 'eye_color', 'hair_color', 'height', 'mass', 'homeworld']
@@ -83,10 +84,10 @@ def index(request):
             min_date = request.POST.get("min_date")
             max_date = request.POST.get("max_date")
             sex = request.POST.get("sex")
-            find = People.objects.filter(gender=sex, homeworld__diameter__gte=diameter, people__release_date__gt=min_date, people__release_date__lt=max_date).distinct()
+            find = People.objects.filter(gender=sex, homeworld__diameter__gte=diameter, movie__release_date__gt=min_date, movie__release_date__lt=max_date).distinct()
             results = []
             for character in find:
-                movies = character.people.filter(release_date__gt=min_date, release_date__lt=max_date)
+                movies = character.movie.filter(release_date__gt=min_date, release_date__lt=max_date)
                 for movie in movies:
                     results.append({
                         'name': character.name,
@@ -96,5 +97,5 @@ def index(request):
                         'diameter': character.homeworld.diameter,
                     })
 
-    return render(request, 'ex10/index.html', {"genre": genre, "results": results})
+    return render(request, 'ex10/index.html', {"genre": genre, "results": results, "error_message": error_message})
    
