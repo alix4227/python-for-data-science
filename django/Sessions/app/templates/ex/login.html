@@ -54,34 +54,21 @@
   </head>
   <body>
   <center>
-    <!-- {% if not results %}
-        <h2>{{error_message}}</h2>
-    {% else %}
-    <form method="POST" action="{% url 'index' %}">
-        {% csrf_token %}
-      <label for="sex-select">Choisissez un genre&nbsp;:</label>
-
-      <select name="sex" id="sex-select">
-        <option value="">--Veuillez choisir un genre--</option>
-        {%for sex in genre%}
-          <option value='{{sex}}'>{{sex}}</option>
-        {%endfor%}
-      </select>
-      <label>Movies minimum release date: <input id="min_release_date" type="date" name="min_date" required></label>
-      <label>Movies maximum release date: <input id="max_release_date" type="date" name="max_date" required></label>
-      <label>Planet diameter greater than: <input id="planet_diameter" type="number" name="planet_diameter" required></label>
-      <button type="submit">Search</button>
-    </form>
-    
-        <ul>
-            {%for character in results%}
-            <div>
-                {{character.name}}-{{character.gender}}-{{character.title}}-{{character.homeworld}}-{{character.diameter}}
-            </div>
-             {%endfor%}
-        </ul>
-    {% endif %} -->
-    <nav>Hello {{username}}!</nav>
+ <div>{{error_message}}</div>
+    <form action="{% url 'login_view' %}" method="post" class="form">
+      {% csrf_token %}
+  <div class="form">
+    <label for="name">Entrez votre nom&nbsp;: </label>
+    <input type="text" name="username" id="username" value="{{ username }}" required />
+  </div>
+  <div class="form">
+    <label for="password">Entrez votre mot de passe&nbsp;: </label>
+    <input type="password" name="password" id="password" required />
+  </div>
+  <div class="form">
+    <input type="submit" value="Login" />
+  </div>
+</form>
   </center>
   </body>
 </html>

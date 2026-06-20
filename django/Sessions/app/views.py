@@ -1,8 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.conf import settings
 from app.forms import LoginForm
 from app.models import User
 import random
+from django.contrib.auth import authenticate, login
 
 def index(request):
     request.session.clear_expired()
@@ -20,15 +21,30 @@ def subscribe(request):
         password = request.POST.get('password')
         password_verification = request.POST.get('password_verification')
         if (password != password_verification):
-            return render(request, 'ex/subscribe.html', {"username": username})
+            return render(request, 'ex/subscribe.html', {"username": username, "error_message": 'Les mots de passe ne correspondent pas!'})
         myForm = LoginForm(request.POST)
         if myForm.is_valid():
             if User.objects.filter(username=username).exists():
-                return render(request, 'ex/subscribe.html', {"username": username})
-            User.objects.create_user(username=username, password=password)           
+                return render(request, 'ex/subscribe.html', {"username": username, "error_message": 'Le username existe deja!'})
+            User.objects.create_user(username=username, password=password)
+            return redirect("login")
+        else:
+            return render(request, 'ex/subscribe.html', {"username": username, "error_message": 'Username ou Mot de passe invalide!'})    
     return render(request, 'ex/subscribe.html', {"username":''})
 
-def login(request):
+def login_view(request):
              
-    username= 'Alix'
-    return render(request, 'ex/login.html', {"username": username})
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        myForm = LoginForm(request.POST)
+        if myForm.is_valid():
+           user = authenticate(request, username=username, password=password)
+           if user:
+            login(request, user) 
+            return redirect("/")
+           else:
+            return render(request, 'ex/login.html', {"username": username, "error_message": 'Username ou Mot de passe invalide!'})
+        else:
+            return render(request, 'ex/login.html', {"username": username, "error_message": 'Username ou Mot de passe invalide!'})
+    return render(request, 'ex/login.html')
