@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Ex00 : Markdown Cheatsheet.</title>
+    <style>
+      span {
+        text-decoration: underline;
+         font-weight: lighter;
+      }
+
+      .titre {
+        text-align: center;
+        font-weight: lighter;
+      }
+      .titre h1,
+      .titre h2 {
+        margin: 0;
+      }
+      
+      i {
+        color: grey;
+        font-size:medium;
+      }
+      h3 {
+        font-family: Cambria;
+      }
+       h2 {
+        font-family: Cambria;
+         text-align: center;
+      }
+      p{
+        text-align: center;
+      }
+      table {
+        width: 90%;
+        max-width: 1000px;
+        margin: 20px auto;
+        table-layout: fixed;
+        border-collapse: collapse;
+        color: black;
+      }
+      th, td {
+        border: 1px solid;
+        padding: 8px 10px;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        vertical-align: top;
+      }
+      #sous_titre {
+        color: blue;
+        font-weight: 900;
+      }
+    </style>
+  </head>
+  <body>
+  <center>
+    <!-- {% if not results %}
+        <h2>{{error_message}}</h2>
+    {% else %}
+    <form method="POST" action="{% url 'index' %}">
+        {% csrf_token %}
+      <label for="sex-select">Choisissez un genre&nbsp;:</label>
+
+      <select name="sex" id="sex-select">
+        <option value="">--Veuillez choisir un genre--</option>
+        {%for sex in genre%}
+          <option value='{{sex}}'>{{sex}}</option>
+        {%endfor%}
+      </select>
+      <label>Movies minimum release date: <input id="min_release_date" type="date" name="min_date" required></label>
+      <label>Movies maximum release date: <input id="max_release_date" type="date" name="max_date" required></label>
+      <label>Planet diameter greater than: <input id="planet_diameter" type="number" name="planet_diameter" required></label>
+      <button type="submit">Search</button>
+    </form>
+    
+        <ul>
+            {%for character in results%}
+            <div>
+                {{character.name}}-{{character.gender}}-{{character.title}}-{{character.homeworld}}-{{character.diameter}}
+            </div>
+             {%endfor%}
+        </ul>
+    {% endif %} -->
+    <nav>Hello {{username}}!</nav>
+  </center>
+  </body>
+</html>

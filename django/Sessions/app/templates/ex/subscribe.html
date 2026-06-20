@@ -54,13 +54,25 @@
   </head>
   <body>
   <center>
-    <nav class="menu">
-      <div>Hello {{username}}!</div>
-  <ul>
-    <div><a href="{% url 'subscribe' %}">Subscribe</a></div>
-    <div><a href="{% url 'login' %}">Login</a></div>
-  </ul>
-</nav>
+
+    <form action="{% url 'subscribe' %}" method="post" class="form">
+      {% csrf_token %}
+  <div class="form">
+    <label for="name">Entrez votre nom&nbsp;: </label>
+    <input type="text" name="username" id="username" value="{{ username }}" required />
+  </div>
+  <div class="form">
+    <label for="password">Entrez votre mot de passe&nbsp;: </label>
+    <input type="password" name="password" id="password" required />
+  </div>
+  <div class="form">
+    <label for="password">Entrez  a nouveau votre mot de passe&nbsp;: </label>
+    <input type="password" name="password_verification" id="password_verification" required />
+  </div>
+  <div class="form">
+    <input type="submit" value="S'abonner !" />
+  </div>
+</form>
   </center>
   </body>
 </html>
