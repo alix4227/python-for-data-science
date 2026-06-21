@@ -61,9 +61,14 @@
     resize: vertical; 
 }
 
-.form {
+.form{
     margin-top: 2rem;
 }
+
+.hello{
+    margin-bottom: 2rem;
+}
+
     </style>
   </head>
   <body>
@@ -87,9 +92,7 @@
 </form>
 {%for item in tip%}
 <ul>
-    <div>{{item.contenu}}</div>
-    <div>{{item.user}}</div>
-    <div>{{item.date}}</div>
+   <div>Tip de {{item.user}}: {{item.contenu}}--posté le: {{item.date}}</div>
 </ul>
 {%endfor%}
 {% else %}
@@ -99,11 +102,11 @@
     <div><a href="{% url 'subscribe' %}">Subscribe</a></div>
     <div><a href="{% url 'login_view' %}">Login</a></div>
   </ul>
-  <div>Hello {{username}}!</div>
+  <div class="hello">Hello {{username}}!</div>
 </nav>
 {%for item in tip%}
 <ul>
-    <div>Tip de {{item.user}}: {{item.contenu}}--poste le: {{item.date}}</div>
+    <div>Tip de {{item.user}}: {{item.contenu}}--posté le: {{item.date}}</div>
 </ul>
 {%endfor%}
 {% endif %}

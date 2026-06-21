@@ -11,6 +11,7 @@ class Tip(models.Model):
     date = models.DateTimeField(auto_now_add=True)
     contenu = models.TextField()
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    
+    upvote = models.ManyToManyField(User, related_name='upvote')
+    downvote = models.ManyToManyField(User, related_name='downvote')
     class Meta:
         db_table = "Tip"
