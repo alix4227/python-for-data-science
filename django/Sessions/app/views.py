@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.conf import settings
-from app.forms import LoginForm
-from app.models import User
+from app.forms import LoginForm, TipForm
+from app.models import User, Tip
 import random
 from django.contrib.auth import authenticate, login, logout
 
@@ -9,13 +9,21 @@ def index(request):
     login = False
     if request.user.is_authenticated:
         login = True
-        return render(request, 'ex/index.html', {"username": request.user.username, "login": login})
+        if request.method == 'POST':
+            contenu = request.POST.get("contenu")
+            myForm = TipForm(request.POST)
+            if myForm.is_valid():
+                user=User.objects.get(username=request.user.username)
+                Tip.objects.create(contenu=contenu, user=user)
+        tip = Tip.objects.all()
+        return render(request, 'ex/index.html', {"username": request.user.username, "login": login, "tip": tip})
     request.session.clear_expired()
     request.session.set_expiry(42)
     if 'username' not in request.session:
         request.session['username'] = random.choice(settings.USER_NAMES) 
-    username = request.session['username']           
-    return render(request, 'ex/index.html', {"username": username, "login": login})
+    username = request.session['username']
+    tip = Tip.objects.all()         
+    return render(request, 'ex/index.html', {"username": username, "login": login, "tip": tip})
 
 def deconnexion(request):
     logout(request)

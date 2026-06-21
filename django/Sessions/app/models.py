@@ -6,3 +6,11 @@ class User(AbstractUser):
     
     class Meta:
         db_table = "Form"
+
+class Tip(models.Model):
+    date = models.DateTimeField(auto_now_add=True)
+    contenu = models.TextField()
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    
+    class Meta:
+        db_table = "Tip"

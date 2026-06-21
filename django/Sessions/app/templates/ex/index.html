@@ -55,6 +55,15 @@
     gap: 10px;
     list-style: none;
 }
+#contenu {
+    width: 50%;
+    height: 100px;
+    resize: vertical; 
+}
+
+.form {
+    margin-top: 2rem;
+}
     </style>
   </head>
   <body>
@@ -66,6 +75,23 @@
   </ul>
   <div>Hello {{username}}!</div>
 </nav>
+<form action="{% url 'index' %}" method="post" class="form">
+      {% csrf_token %}
+  <div class="form">
+    <label for="contenu">Entrez votre tip&nbsp;: </label>
+    <textarea name="contenu" id="contenu" required></textarea>
+  </div>
+  <div class="form">
+    <input type="submit" value="Submit" />
+  </div>
+</form>
+{%for item in tip%}
+<ul>
+    <div>{{item.contenu}}</div>
+    <div>{{item.user}}</div>
+    <div>{{item.date}}</div>
+</ul>
+{%endfor%}
 {% else %}
     <nav class="menu">
   <ul>
@@ -75,6 +101,11 @@
   </ul>
   <div>Hello {{username}}!</div>
 </nav>
+{%for item in tip%}
+<ul>
+    <div>Tip de {{item.user}}: {{item.contenu}}--poste le: {{item.date}}</div>
+</ul>
+{%endfor%}
 {% endif %}
   </center>
   </body>
