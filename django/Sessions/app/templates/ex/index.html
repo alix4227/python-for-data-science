@@ -50,17 +50,32 @@
         color: blue;
         font-weight: 900;
       }
+    ul {
+    display: flex;
+    gap: 10px;
+    list-style: none;
+}
     </style>
   </head>
   <body>
   <center>
-    <nav class="menu">
-      <div>Hello {{username}}!</div>
+{% if login %}
+     <nav class="menu">
   <ul>
+    <div><a href="{% url 'deconnexion' %}">Deconnexion</a></div>
+  </ul>
+  <div>Hello {{username}}!</div>
+</nav>
+{% else %}
+    <nav class="menu">
+  <ul>
+    <div><a href="{% url 'index' %}">LIFE PRO TIPS</a></div>
     <div><a href="{% url 'subscribe' %}">Subscribe</a></div>
     <div><a href="{% url 'login_view' %}">Login</a></div>
   </ul>
+  <div>Hello {{username}}!</div>
 </nav>
+{% endif %}
   </center>
   </body>
 </html>

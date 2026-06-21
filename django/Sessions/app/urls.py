@@ -21,4 +21,5 @@ urlpatterns = [
     path("", views.index, name="index"),
     path("subscribe", views.subscribe, name="subscribe"),
     path("login", views.login_view, name="login_view"),
+    path("logout", views.deconnexion, name="deconnexion"),
 ]

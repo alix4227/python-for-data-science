@@ -3,19 +3,29 @@ from django.conf import settings
 from app.forms import LoginForm
 from app.models import User
 import random
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 
 def index(request):
+    login = False
+    if request.user.is_authenticated:
+        login = True
+        return render(request, 'ex/index.html', {"username": request.user.username, "login": login})
     request.session.clear_expired()
     request.session.set_expiry(42)
     if 'username' not in request.session:
         request.session['username'] = random.choice(settings.USER_NAMES) 
     username = request.session['username']           
+    return render(request, 'ex/index.html', {"username": username, "login": login})
 
-    return render(request, 'ex/index.html', {"username": username})
+def deconnexion(request):
+    logout(request)
+    return redirect("index")
+    
 
 def subscribe(request):
     username = ''
+    if request.user.is_authenticated:
+        return redirect('/')
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -27,13 +37,14 @@ def subscribe(request):
             if User.objects.filter(username=username).exists():
                 return render(request, 'ex/subscribe.html', {"username": username, "error_message": 'Le username existe deja!'})
             User.objects.create_user(username=username, password=password)
-            return redirect("login")
+            return redirect("login_view")
         else:
-            return render(request, 'ex/subscribe.html', {"username": username, "error_message": 'Username ou Mot de passe invalide!'})    
-    return render(request, 'ex/subscribe.html', {"username":''})
+            return render(request, 'ex/subscribe.html', {"username": username, "error_message": myForm.errors})    
+    return render(request, 'ex/subscribe.html', {"username":username})
 
 def login_view(request):
-             
+    if request.user.is_authenticated:
+        return redirect('/')
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -42,9 +53,9 @@ def login_view(request):
            user = authenticate(request, username=username, password=password)
            if user:
             login(request, user) 
-            return redirect("/")
+            return redirect('/')
            else:
             return render(request, 'ex/login.html', {"username": username, "error_message": 'Username ou Mot de passe invalide!'})
         else:
-            return render(request, 'ex/login.html', {"username": username, "error_message": 'Username ou Mot de passe invalide!'})
+            return render(request, 'ex/login.html', {"username": username, "error_message": myForm.errors})
     return render(request, 'ex/login.html')

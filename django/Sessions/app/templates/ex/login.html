@@ -50,11 +50,23 @@
         color: blue;
         font-weight: 900;
       }
+      ul {
+    display: flex;
+    gap: 10px;
+    list-style: none;
+}
     </style>
   </head>
   <body>
   <center>
  <div>{{error_message}}</div>
+    <nav class="menu">
+        <ul>
+            <div><a href="{% url 'index' %}">LIFE PRO TIPS</a></div>
+            <div><a href="{% url 'subscribe' %}">Subscribe</a></div>
+            <div><a href="{% url 'login_view' %}">Login</a></div>
+        </ul>
+    </nav>
     <form action="{% url 'login_view' %}" method="post" class="form">
       {% csrf_token %}
   <div class="form">
