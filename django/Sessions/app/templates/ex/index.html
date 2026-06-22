@@ -78,9 +78,9 @@
   <body>
   <center>
 {% if login %}
-     <nav class="menu">
+     <nav class="navbar navbar-dark bg-primary">
   <ul>
-    <div><a href="{% url 'deconnexion' %}">Deconnexion</a></div>
+    <div><a class="navbar-brand" href="{% url 'deconnexion' %}">Deconnexion</a></div>
   </ul>
   <div>Hello {{username}}!</div>
 </nav>
@@ -88,12 +88,13 @@
       {% csrf_token %}
   <div class="form">
     <label for="contenu">Entrez votre tip&nbsp;: </label>
-    <textarea name="contenu" id="contenu" required></textarea>
+    <textarea class="form-control" aria-label="With textarea" name="contenu" id="contenu" required></textarea>
   </div>
   <div class="form">
-    <input type="submit" value="Submit"/>
+    <input type="submit" class="btn btn-primary" value="Submit"/>
   </div>
 </form>
+<hr class="my-4">
 {%for item in tip%}
 <ul>
    <div>Tip de {{item.user}}: {{item.contenu}}--posté le: {{item.date}}</div>
@@ -107,11 +108,17 @@
 </ul>
 {%endfor%}
 {% else %}
-    <nav class="menu">
-  <ul>
-    <div><a href="{% url 'index' %}">LIFE PRO TIPS</a></div>
-    <div><a href="{% url 'subscribe' %}">Subscribe</a></div>
-    <div><a href="{% url 'login_view' %}">Login</a></div>
+<nav class="navbar navbar-dark bg-primary">
+  <ul class="navbar-nav flex-row gap-3">
+    <li class="nav-item active">
+        <a class="navbar-brand" href="{% url 'index' %}">LIFE PRO TIPS</a></div>
+    </li>
+    <li class="nav-item active">
+        <a class="nav-link" href="{% url 'subscribe' %}">Subscribe<span class="sr-only">(current)</span></a>
+    </li>
+    <li class="nav-item active">
+        <a class="nav-link" href="{% url 'login_view' %}">Login<span class="sr-only">(current)</span></a>
+    </li>
   </ul>
   <div class="hello">Hello {{username}}!</div>
 </nav>

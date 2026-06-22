@@ -81,7 +81,8 @@ def login_view(request):
         if myForm.is_valid():
            user = authenticate(request, username=username, password=password)
            if user:
-            login(request, user) 
+            login(request, user)
+            request.session.set_expiry(0)
             return redirect('/')
            else:
             return render(request, 'ex/login.html', {"username": username, "error_message": 'Username ou Mot de passe invalide!'})
