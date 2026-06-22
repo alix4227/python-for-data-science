@@ -15,9 +15,27 @@ def index(request):
             if myForm.is_valid():
                 Tip.objects.create(contenu=contenu, user=request.user)
             if request.POST.get("upvote"):
-                value = request.POST.get("upvote")
-                user = Tip.objects.get(id=value)
-                user.upvote.add(request.user) 
+                tip_id = request.POST.get("upvote")
+                tip = Tip.objects.get(id=tip_id)
+                if not request.user in tip.downvote.all():
+                    if not request.user in tip.upvote.all():
+                        tip.upvote.add(request.user)
+                    elif request.user in tip.upvote.all():
+                        tip.upvote.remove(request.user)
+                elif request.user in tip.downvote.all():
+                    tip.upvote.add(request.user)
+                    tip.downvote.remove(request.user)
+            if request.POST.get("downvote"):
+                tip_id = request.POST.get("downvote")
+                tip = Tip.objects.get(id=tip_id)
+                if not request.user in tip.upvote.all():
+                    if not request.user in tip.downvote.all():
+                        tip.downvote.add(request.user)
+                    elif request.user in tip.downvote.all():
+                        tip.downvote.remove(request.user)
+                elif request.user in tip.upvote.all():
+                    tip.downvote.add(request.user)
+                    tip.upvote.remove(request.user)  
         tip = Tip.objects.all()
         return render(request, 'ex/index.html', {"username": request.user.username, "login": login, "tip": tip})
     request.session.clear_expired()

@@ -91,12 +91,19 @@
     <textarea name="contenu" id="contenu" required></textarea>
   </div>
   <div class="form">
-    <input type="submit" value="Submit" />
+    <input type="submit" value="Submit"/>
   </div>
 </form>
 {%for item in tip%}
 <ul>
    <div>Tip de {{item.user}}: {{item.contenu}}--posté le: {{item.date}}</div>
+   <form action="{% url 'index' %}" method="post">
+        {% csrf_token %}
+    <button type="submit" name="upvote" value="{{item.id}}" class="btn btn-primary">Upvote</button>
+    <span class="btn btn-outline-info disabled">{{ item.upvote.count }}</span>
+    <button type="submit" name="downvote" value="{{item.id}}" class="btn btn-primary">Downvote</button>
+    <span class="btn btn-outline-info disabled">{{ item.downvote.count }}</span>
+    </form>
 </ul>
 {%endfor%}
 {% else %}
@@ -111,10 +118,6 @@
 {%for item in tip%}
 <ul>
     <div>Tip de {{item.user}}: {{item.contenu}}--posté le: {{item.date}}</div>
-    <form action="{% url 'index' %}" method="post">
-        {% csrf_token %}
-    <button type="submit" name="upvote" value={{item.id}} class="btn btn-primary">Upvote</button>
-    </form>
 </ul>
 {%endfor%}
 {% endif %}
