@@ -14,6 +14,10 @@ def index(request):
             myForm = TipForm(request.POST)
             if myForm.is_valid():
                 Tip.objects.create(contenu=contenu, user=request.user)
+            if request.POST.get("upvote"):
+                value = request.POST.get("upvote")
+                user = Tip.objects.get(id=value)
+                user.upvote.add(request.user) 
         tip = Tip.objects.all()
         return render(request, 'ex/index.html', {"username": request.user.username, "login": login, "tip": tip})
     request.session.clear_expired()
