@@ -82,7 +82,7 @@
   <ul>
     <div><a class="navbar-brand" href="{% url 'deconnexion' %}">Deconnexion</a></div>
   </ul>
-  <div>Hello {{username}}!</div>
+  <div>Hello {{username}} ({{reputation}})!</div>
 </nav>
 <form action="{% url 'index' %}" method="post" class="form">
       {% csrf_token %}

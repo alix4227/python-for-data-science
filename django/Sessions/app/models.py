@@ -3,6 +3,7 @@ from django.contrib.auth.models import AbstractUser
 
 class User(AbstractUser):
     password_verification = models.CharField(max_length=64, null=True)
+    reputation = models.IntegerField(default=0)
     
     class Meta:
         db_table = "Form"

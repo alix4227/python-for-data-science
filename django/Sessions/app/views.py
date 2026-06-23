@@ -11,22 +11,30 @@ def delete_tip(request):
     if request.POST.get("delete"):
         tip_id = request.POST.get("delete")
         tip = Tip.objects.get(id=tip_id)
-        if request.user.has_perm('app.delete_tip') or request.user == tip.user:
+        if request.user.has_perm('app.delete_tip') or request.user == tip.user or request.user.reputation >= 30:
+            tip.user.reputation -= ((tip.upvote.count() * 5) + (tip.downvote.count() * -2))
+            tip.user.save()
             tip.delete()
 
 def downvote_tip(request):
     if request.POST.get("downvote"):
         tip_id = request.POST.get("downvote")
         tip = Tip.objects.get(id=tip_id)
-        if request.user.has_perm('app.can_downvote_tip') or request.user == tip.user:
+        if request.user.has_perm('app.can_downvote_tip') or request.user == tip.user or request.user.reputation >= 15:
             if not request.user in tip.upvote.all():
                 if not request.user in tip.downvote.all():
                     tip.downvote.add(request.user)
+                    tip.user.reputation = ((tip.upvote.count() * 5) + (tip.downvote.count() * -2))
+                    tip.user.save()
                 elif request.user in tip.downvote.all():
                     tip.downvote.remove(request.user)
+                    tip.user.reputation = ((tip.upvote.count() * 5) + (tip.downvote.count() * -2))
+                    tip.user.save()
             elif request.user in tip.upvote.all():
                 tip.downvote.add(request.user)
                 tip.upvote.remove(request.user)
+                tip.user.reputation = ((tip.upvote.count() * 5) + (tip.downvote.count() * -2))
+                tip.user.save()
 
 def upvote_tip(request):
     if request.POST.get("upvote"):
@@ -35,15 +43,21 @@ def upvote_tip(request):
         if not request.user in tip.downvote.all():
             if not request.user in tip.upvote.all():
                 tip.upvote.add(request.user)
+                tip.user.reputation = ((tip.upvote.count() * 5) + (tip.downvote.count() * -2))
+                tip.user.save()
             elif request.user in tip.upvote.all():
                 tip.upvote.remove(request.user)
+                tip.user.reputation = ((tip.upvote.count() * 5) + (tip.downvote.count() * -2))
+                tip.user.save()
         elif request.user in tip.downvote.all():
             tip.upvote.add(request.user)
             tip.downvote.remove(request.user)
+            tip.user.reputation = ((tip.upvote.count() * 5) + (tip.downvote.count() * -2))
+            tip.user.save()
+
 def index(request):
     login = False
     if request.user.is_authenticated:
-        login = True
         if request.method == 'POST':
             contenu = request.POST.get("contenu")
             myForm = TipForm(request.POST)
@@ -53,7 +67,14 @@ def index(request):
             downvote_tip(request)
             delete_tip(request)
         tip = Tip.objects.all()
-        return render(request, 'ex/index.html', {"username": request.user.username, "login": login, "tip": tip})
+        tip_user = Tip.objects.filter(user=request.user)
+        reputation = 0
+        if tip:
+            for item in tip_user:
+                reputation += ((item.upvote.count() * 5) + (item.downvote.count() * -2))
+        login = True
+        request.user.reputation = reputation
+        return render(request, 'ex/index.html', {"username": request.user.username, "login": login, "tip": tip, "reputation": request.user.reputation})
     request.session.clear_expired()
     request.session.set_expiry(42)
     if 'username' not in request.session:
