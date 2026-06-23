@@ -15,3 +15,6 @@ class Tip(models.Model):
     downvote = models.ManyToManyField(User, related_name='downvote')
     class Meta:
         db_table = "Tip"
+        permissions = [
+        ('can_downvote_tip', 'Can downvote tip'),  # (codename, description)
+]

@@ -4,7 +4,42 @@ from app.forms import LoginForm, TipForm
 from app.models import User, Tip
 import random
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import permission_required
 
+
+def delete_tip(request):
+    if request.POST.get("delete"):
+        tip_id = request.POST.get("delete")
+        tip = Tip.objects.get(id=tip_id)
+        if request.user.has_perm('app.delete_tip') or request.user == tip.user:
+            tip.delete()
+
+def downvote_tip(request):
+    if request.POST.get("downvote"):
+        tip_id = request.POST.get("downvote")
+        tip = Tip.objects.get(id=tip_id)
+        if request.user.has_perm('app.can_downvote_tip') or request.user == tip.user:
+            if not request.user in tip.upvote.all():
+                if not request.user in tip.downvote.all():
+                    tip.downvote.add(request.user)
+                elif request.user in tip.downvote.all():
+                    tip.downvote.remove(request.user)
+            elif request.user in tip.upvote.all():
+                tip.downvote.add(request.user)
+                tip.upvote.remove(request.user)
+
+def upvote_tip(request):
+    if request.POST.get("upvote"):
+        tip_id = request.POST.get("upvote")
+        tip = Tip.objects.get(id=tip_id)
+        if not request.user in tip.downvote.all():
+            if not request.user in tip.upvote.all():
+                tip.upvote.add(request.user)
+            elif request.user in tip.upvote.all():
+                tip.upvote.remove(request.user)
+        elif request.user in tip.downvote.all():
+            tip.upvote.add(request.user)
+            tip.downvote.remove(request.user)
 def index(request):
     login = False
     if request.user.is_authenticated:
@@ -14,28 +49,9 @@ def index(request):
             myForm = TipForm(request.POST)
             if myForm.is_valid():
                 Tip.objects.create(contenu=contenu, user=request.user)
-            if request.POST.get("upvote"):
-                tip_id = request.POST.get("upvote")
-                tip = Tip.objects.get(id=tip_id)
-                if not request.user in tip.downvote.all():
-                    if not request.user in tip.upvote.all():
-                        tip.upvote.add(request.user)
-                    elif request.user in tip.upvote.all():
-                        tip.upvote.remove(request.user)
-                elif request.user in tip.downvote.all():
-                    tip.upvote.add(request.user)
-                    tip.downvote.remove(request.user)
-            if request.POST.get("downvote"):
-                tip_id = request.POST.get("downvote")
-                tip = Tip.objects.get(id=tip_id)
-                if not request.user in tip.upvote.all():
-                    if not request.user in tip.downvote.all():
-                        tip.downvote.add(request.user)
-                    elif request.user in tip.downvote.all():
-                        tip.downvote.remove(request.user)
-                elif request.user in tip.upvote.all():
-                    tip.downvote.add(request.user)
-                    tip.upvote.remove(request.user)  
+            upvote_tip(request)
+            downvote_tip(request)
+            delete_tip(request)
         tip = Tip.objects.all()
         return render(request, 'ex/index.html', {"username": request.user.username, "login": login, "tip": tip})
     request.session.clear_expired()

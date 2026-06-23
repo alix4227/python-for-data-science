@@ -104,6 +104,7 @@
     <span class="btn btn-outline-info disabled">{{ item.upvote.count }}</span>
     <button type="submit" name="downvote" value="{{item.id}}" class="btn btn-primary">Downvote</button>
     <span class="btn btn-outline-info disabled">{{ item.downvote.count }}</span>
+    <button type="submit" name="delete" value="{{item.id}}" class="btn btn-primary">Delete</button>
     </form>
 </ul>
 {%endfor%}
