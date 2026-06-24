@@ -1,4 +1,12 @@
 {% extends "base.html" %}
-{% block title %}djangoAdvanced:Home{% endblock %}
+{% block title %}djangoAdvanced: Home{% endblock %}
 {% block style%} {% endblock %}
-{%block content%} Hello World {%endblock%}
+{%block content%} 
+<center>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+<button type="submit">Créer</button>
+</form>
+</center>
+{%endblock%}
