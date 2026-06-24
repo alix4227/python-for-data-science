@@ -20,9 +20,9 @@ from django.views.generic import TemplateView, ListView, DetailView
 from . import views
 from .views import *
 urlpatterns = [
-    path("Articles", ArticleCreateView.as_view(), name="index"),
+    path("Articles", ArticleCreateView.as_view(), name="article"),
     path("CreateUser", UserCreationView.as_view(), name="create"),
-    path("Display", ArticlesView.as_view(), name="display"),
+    path("Display", Display.as_view(), name="display"),
     path("Login", Login.as_view(), name="login"),
    
 ]

@@ -9,7 +9,7 @@ from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from .forms import *
 
 
-class ArticlesView(ListView):
+class Display(ListView):
     model = Articles
     context_object_name = "articles_objects"
     template_name = "display.html"
@@ -32,7 +32,7 @@ class UserCreationView(CreateView):
     model = User
     form_class = UserCreationForm
     template_name = 'index.html'
-    success_url = reverse_lazy('index')
+    success_url = reverse_lazy('article')
 
 class Login(FormView):
     model = User
