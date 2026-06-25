@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}djangoAdvanced: Register{% endblock %}
+
+{% block content %}
+<div style="max-width: 400px; margin: 50px auto;">
+    <h2>Créer un compte</h2>
+
+    {% if form.errors %}
+        <div style="color: red; margin-bottom: 1em;">
+            {% for field in form %}
+                {% for error in field.errors %}
+                    <p>{{ field.label }} : {{ error }}</p>
+                {% endfor %}
+            {% endfor %}
+            {% for error in form.non_field_errors %}
+                <p>{{ error }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+        {% for field in form %}
+            <div style="margin-bottom: 1em;">
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label><br>
+                {{ field }}
+                {% if field.help_text %}
+                    <small style="color: grey;">{{ field.help_text }}</small>
+                {% endif %}
+            </div>
+        {% endfor %}
+        <button type="submit">Créer</button>
+    </form>
+</div>
+{% endblock %}

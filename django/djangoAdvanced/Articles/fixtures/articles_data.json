@@ -1,0 +1,22 @@
+[
+  {
+    "model": "Articles.articles",
+    "pk": 1,
+    "fields": {
+      "title": "test",
+      "author": "acrusoe",
+      "synopsis": "test",
+      "content": "Lorem Ipsum"
+    }
+  },
+  {
+    "model": "Articles.articles",
+    "pk": 2,
+    "fields": {
+      "title": "test2",
+      "author": "acrusoe",
+      "synopsis": "test2",
+      "content": "Lorem Ipsum 2"
+    }
+  }
+]

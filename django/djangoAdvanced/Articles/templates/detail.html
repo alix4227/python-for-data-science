@@ -8,15 +8,14 @@
         <th>{{header}}</th>
     {%endfor%}
     </tr>
-    {%for item in articles_objects%}
     <tr>
         <td style="height: 40px; width: 80px;">{{item.id}}</td>
         <td style="height: 40px; width: 80px;">{{item.title}}</td>
         <td style="height: 40px; width: 80px;">{{item.author}}</td>
         <td style="height: 40px; width: 80px;">{{item.created}}</td>
         <td style="height: 40px; width: 80px;">{{item.synopsis}}</td>
+        <td style="height: 40px; width: 80px;">{{item.content}}</td>
     </tr>
-    {%endfor%}
 </table>
 </center>
 {%endblock%}
