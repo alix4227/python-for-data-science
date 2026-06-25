@@ -1,10 +1,10 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic import *
-from .models import Articles
+from .models import *
 from django.contrib.auth.models import User
 from django.urls import reverse_lazy
 from django.contrib.auth.views import *
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import *
 from .forms import *
 
@@ -66,3 +66,25 @@ class Detail(DetailView):
         context = super().get_context_data(**kwargs)
         context["headers"] = [f.name for f in Articles._meta.fields]
         return context
+
+class Logout(TemplateView):
+    def get(self, request, **kwargs):
+        logout(self.request)
+        return redirect('home')
+
+class Favourites(ListView):
+    model = UserFavouriteArticle
+    context_object_name = "favourites"
+    template_name = "favourites.html"
+    def get_queryset(self):
+        qs = super().get_queryset()
+        return qs.filter(user=self.request.user)
+
+class FavouriteCreateView(CreateView):
+    model = UserFavouriteArticle
+    fields = ['article']
+    template_name = 'article_creation.html'
+    success_url = reverse_lazy('display')
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)

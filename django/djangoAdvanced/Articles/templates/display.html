@@ -10,7 +10,7 @@
     </tr>
     {%for item in articles_objects%}
     <tr>
-        <td style="height: 40px; width: 80px;">{{item.id}}</td>
+        <td style="height: 40px; width: 80px;"><a href="{% url 'detail' item.id %}">{{item.title}}</a></td>
         <td style="height: 40px; width: 80px;">{{item.title}}</td>
         <td style="height: 40px; width: 80px;">{{item.author}}</td>
         <td style="height: 40px; width: 80px;">{{item.created}}</td>
