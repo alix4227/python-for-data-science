@@ -1,7 +1,10 @@
 {% extends "base.html" %}
 {% block title %}djangoAdvanced: Display{% endblock %}
 {%block content%}
-<center> 
+<center>
+<nav>
+    <a href="{% url 'createArticle' %}">Publish Article</a>
+</nav>     
 <table>
     <tr>
     {%for header in headers%}

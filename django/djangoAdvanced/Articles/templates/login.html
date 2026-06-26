@@ -2,11 +2,4 @@
 {% block title %}djangoAdvanced: Home{% endblock %}
 {% block style%} {% endblock %}
 {%block content%} 
-<center>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-<button type="submit">Login</button>
-</form>
-</center>
 {%endblock%}

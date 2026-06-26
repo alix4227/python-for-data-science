@@ -20,5 +20,10 @@
         <td style="height: 40px; width: 80px;">{{item.content}}</td>
     </tr>
 </table>
+<form method="post" action="{% url 'addFavourite' item.id %}">
+    {% csrf_token %}
+    <input type="hidden" name="article" value="{{ item.id }}">
+    <button type="submit">Add to favourites</button>
+</form>
 </center>
 {%endblock%}

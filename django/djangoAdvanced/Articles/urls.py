@@ -21,13 +21,13 @@ from . import views
 from .views import *
 urlpatterns = [
     path("createArticles", ArticleCreateView.as_view(), name="createArticle"),
-    path("createUser", UserCreationView.as_view(), name="createUser"),
+    path("register", UserCreationView.as_view(), name="register"),
     path("display", Display.as_view(), name="display"),
     path("login", Login.as_view(), name="login"),
     path("", Home.as_view(), name="home"),
     path("publications", Publications.as_view(), name="publications"),
-    path("<pk>/", Detail.as_view(), name="detail"),
     path("logout", Logout.as_view(), name="logout"),
     path("favourites", Favourites.as_view(), name="favourites"),
-    path("createFavourites", FavouriteCreateView.as_view(), name="createFavourite"),
+    path("addFavourite/<int:pk>/", FavouriteCreateView.as_view(), name="addFavourite"),
+    path("<int:pk>/", Detail.as_view(), name="detail"),
 ]

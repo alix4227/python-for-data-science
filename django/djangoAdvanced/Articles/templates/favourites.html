@@ -3,7 +3,7 @@
 {%block content%}
 <center> 
 {% for favourite in favourites%}
-    <div><a href="{% url 'detail' %}">{{favourite.article.title}}</a></div>
+    <div><a href="{% url 'detail' favourite.article.id%}">{{favourite.article.title}}</a></div>
 {%endfor%}
 </center>
 {%endblock%}
