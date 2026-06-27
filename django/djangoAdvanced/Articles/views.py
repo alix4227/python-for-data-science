@@ -8,14 +8,22 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import *
 from .forms import *
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.utils import timezone
+
 
 class Display(ListView):
     model = Articles
     context_object_name = "articles_objects"
     template_name = "display.html"
+    ordering = ['-created']
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        now = timezone.now()
+        for article in context["articles_objects"]:
+            delta = now - article.created
+            article.when = str(delta).split('.')[0]
         context["headers"] = [f.name for f in Articles._meta.fields if not f.name == 'content']
+        context['headers'].append('When')
         return context
 
 class ArticleCreateView(LoginRequiredMixin,CreateView):
@@ -41,7 +49,7 @@ class UserCreationView(CreateView):
 
 class Login(FormView):
     model = User
-    form_class = AuthenticationForm
+    form_class = CustomAuthenticationForm
     template_name = 'login.html'
     success_url = reverse_lazy('home')
     def form_valid(self, form):

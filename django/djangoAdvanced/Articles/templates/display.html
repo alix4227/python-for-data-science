@@ -14,7 +14,13 @@
         <td style="height: 40px; width: 80px;">{{item.title}}</td>
         <td style="height: 40px; width: 80px;">{{item.author}}</td>
         <td style="height: 40px; width: 80px;">{{item.created}}</td>
-        <td style="height: 40px; width: 80px;">{{item.synopsis}}</td>
+        {%if item.synopsis|length > 200%}
+            <td style="height: 40px; width: 80px;">{{item.synopsis|truncatechars:20}}</td>
+        {%else%}
+            <td style="height: 40px; width: 80px;">{{item.synopsis}}</td>
+        {%endif%}
+        <td style="height: 40px; width: 80px;">{{item.when}}</td>
+        <td style="height: 40px; width: 80px;"><a href="{% url 'detail' item.id %}" class="btn btn-primary btn-sm">Read</a></td>
     </tr>
     {%endfor%}
 </table>

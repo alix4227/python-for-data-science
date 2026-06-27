@@ -23,7 +23,7 @@
 <form method="post" action="{% url 'addFavourite' item.id %}">
     {% csrf_token %}
     <input type="hidden" name="article" value="{{ item.id }}">
-    <button type="submit">Add to favourites</button>
+    <button type="submit" class="btn btn-primary">Add To Favourites</button>
 </form>
 </center>
 {%endblock%}
