@@ -19,6 +19,7 @@ from django.urls import path
 from django.views.generic import *
 from . import views
 from .views import *
+
 urlpatterns = [
     path("createArticles", ArticleCreateView.as_view(), name="createArticle"),
     path("register", UserCreationView.as_view(), name="register"),

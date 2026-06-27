@@ -8,7 +8,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import *
 from .forms import *
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.utils import timezone
+from django.utils import timezone, translation
+from django.utils.translation import gettext as _
 
 
 class Display(ListView):
@@ -22,8 +23,7 @@ class Display(ListView):
         for article in context["articles_objects"]:
             delta = now - article.created
             article.when = str(delta).split('.')[0]
-        context["headers"] = [f.name for f in Articles._meta.fields if not f.name == 'content']
-        context['headers'].append('When')
+        context["headers"] = [_("ID"),_("titre"), _("auteur"), _("créé le"), _("synopsis"), _("Quand")]
         return context
 
 class ArticleCreateView(LoginRequiredMixin,CreateView):

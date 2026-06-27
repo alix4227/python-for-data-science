@@ -38,8 +38,17 @@
       
    </head>
    <body>
+{% load i18n %}
+    <div class="d-flex justify-content-end p-2">
+        {% get_current_language as LANGUAGE_CODE %}
+        {% if LANGUAGE_CODE == 'fr' %}
+            <a href="/en{{ request.path|slice:'3:' }}">English</a>
+        {% else %}
+            <a href="/fr{{ request.path|slice:'3:' }}">Français</a>
+        {% endif %}
+    </div>
+    <h2 style="font-weight: bold;">Articles<small class="text-muted"> Share your writings</small></h2><br>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item active">
