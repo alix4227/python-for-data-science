@@ -31,5 +31,29 @@ msgstr "créé le"
 msgid "synopsis"
 msgstr "synopsis"
 
-msgid "Quand"
-msgstr "Quand"
+msgid "Cree il y a"
+msgstr "Cree il y a"
+
+msgid "Share your writings"
+msgstr "Partagez vos écrits"
+
+msgid "Articles"
+msgstr "Articles"
+
+msgid "Register"
+msgstr "S'inscrire"
+
+msgid "Favourites"
+msgstr "Favoris"
+
+msgid "Publications"
+msgstr "Publications"
+
+msgid "Login"
+msgstr "Connexion"
+
+msgid "Logged as"
+msgstr "Connecté en tant que"
+
+msgid "Logout"
+msgstr "Déconnexion"

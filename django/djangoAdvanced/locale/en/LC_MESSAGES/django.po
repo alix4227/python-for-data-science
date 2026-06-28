@@ -31,5 +31,5 @@ msgstr "created at"
 msgid "synopsis"
 msgstr "synopsis"
 
-msgid "Quand"
+msgid "Cree il y a"
 msgstr "When"

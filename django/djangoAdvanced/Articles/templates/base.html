@@ -39,34 +39,34 @@
    </head>
    <body>
 {% load i18n %}
-    <div class="d-flex justify-content-end p-2">
-        {% get_current_language as LANGUAGE_CODE %}
-        {% if LANGUAGE_CODE == 'fr' %}
-            <a href="/en{{ request.path|slice:'3:' }}">English</a>
-        {% else %}
-            <a href="/fr{{ request.path|slice:'3:' }}">Français</a>
-        {% endif %}
-    </div>
-    <h2 style="font-weight: bold;">Articles<small class="text-muted"> Share your writings</small></h2><br>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<div class="d-flex justify-content-end p-2">
+    {% get_current_language as LANGUAGE_CODE %}
+    {% if LANGUAGE_CODE == 'fr' %}
+        <a href="/en{{ request.path|slice:'3:' }}">English</a>
+    {% else %}
+        <a href="/fr{{ request.path|slice:'3:' }}">Français</a>
+    {% endif %}
+</div>
+<h2 style="font-weight: bold;">Articles<small class="text-muted"> {% trans "Share your writings" %}</small></h2><br>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item active">
-        <a class="nav-link" href="{% url 'home'%}"> <i class="bi bi-files" style=" color: black;"></i><span class="sr-only">(current)</span></a>
+        <a class="nav-link" href="{% url 'home'%}"><i class="bi bi-files" style="color: black;"></i><span class="sr-only">(current)</span></a>
       </li>
-       <li class="nav-item active">
-        <a class="nav-link" href="{% url 'display'%}">Articles <span class="sr-only">(current)</span></a>
+      <li class="nav-item active">
+        <a class="nav-link" href="{% url 'display'%}">{% trans "Articles" %}<span class="sr-only">(current)</span></a>
       </li>
       {% if not user.is_authenticated %}
       <li class="nav-item active">
-        <a class="nav-link" href="{% url 'register'%}">Register <span class="sr-only">(current)</span></a>
+        <a class="nav-link" href="{% url 'register'%}">{% trans "Register" %}<span class="sr-only">(current)</span></a>
       </li>
-      {%else%}
-       <li class="nav-item active">
-        <a class="nav-link" href="{% url 'favourites'%}">Favourites <span class="sr-only">(current)</span></a>
+      {% else %}
+      <li class="nav-item active">
+        <a class="nav-link" href="{% url 'favourites'%}">{% trans "Favourites" %}<span class="sr-only">(current)</span></a>
       </li>
-       <li class="nav-item active">
-        <a class="nav-link" href="{% url 'publications'%}">Publications <span class="sr-only">(current)</span></a>
+      <li class="nav-item active">
+        <a class="nav-link" href="{% url 'publications'%}">{% trans "Publications" %}<span class="sr-only">(current)</span></a>
       </li>
       {% endif %}
     </ul>
@@ -76,18 +76,18 @@
         {% csrf_token %}
         {{ form_login.username }}
         {{ form_login.password }}
-       <button type="submit" class="btn btn-light">Login</button>
+        <button type="submit" class="btn btn-light">{% trans "Login" %}</button>
     </form>
     </ul>
-    {%else%}
+    {% else %}
     <ul class="navbar-nav">
     <li class="nav-item active">
-        <a class="nav-link">Logged as {{user}} <span class="sr-only">(current)</span></a>
-      </li>
+        <a class="nav-link">{% trans "Logged as" %} {{user}}<span class="sr-only">(current)</span></a>
+    </li>
     <li class="nav-item active">
-        <a class="nav-link" href="{% url 'logout'%}">Logout <span class="sr-only">(current)</span></a>
-      </li>
-      </ul>
+        <a class="nav-link" href="{% url 'logout'%}">{% trans "Logout" %}<span class="sr-only">(current)</span></a>
+    </li>
+    </ul>
     {% endif %}
   </div>
 </nav>

@@ -10,7 +10,11 @@ from .forms import *
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils import timezone, translation
 from django.utils.translation import gettext as _
+from django.http import *
 
+
+# def handler404(request, exception):
+#    return render(request, '404handler.html')
 
 class Display(ListView):
     model = Articles
@@ -23,7 +27,7 @@ class Display(ListView):
         for article in context["articles_objects"]:
             delta = now - article.created
             article.when = str(delta).split('.')[0]
-        context["headers"] = [_("ID"),_("titre"), _("auteur"), _("créé le"), _("synopsis"), _("Quand")]
+        context["headers"] = [_("ID"),_("titre"), _("auteur"), _("créé le"), _("synopsis"), _("Cree il y a")]
         return context
 
 class ArticleCreateView(LoginRequiredMixin,CreateView):
@@ -46,6 +50,10 @@ class UserCreationView(CreateView):
         context = super().get_context_data(**kwargs)
         context["form_register"] = UserCreationForm
         return context
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            raise Http404
+        return super().dispatch(request, *args, **kwargs)
 
 class Login(FormView):
     model = User
@@ -60,7 +68,7 @@ class Login(FormView):
 class Home(RedirectView):
     pattern_name = 'display'
 
-class Publications(ListView):
+class Publications(LoginRequiredMixin, ListView):
     model = Articles
     context_object_name = "articles_objects"
     template_name = "publications.html"
@@ -87,7 +95,7 @@ class Logout(TemplateView):
         logout(self.request)
         return redirect('home')
 
-class Favourites(ListView):
+class Favourites(LoginRequiredMixin, ListView):
     model = UserFavouriteArticle
     context_object_name = "favourites"
     template_name = "favourites.html"
@@ -101,5 +109,8 @@ class FavouriteCreateView(LoginRequiredMixin, TemplateView):
         return redirect('detail', pk=pk)
     def post(self, request, *args, **kwargs):
         article = Articles.objects.get(pk=request.POST.get('article'))
-        UserFavouriteArticle.objects.get_or_create(user=request.user, article=article)
+        already_favourite = UserFavouriteArticle.objects.filter(user=request.user, article=article).exists()
+        if already_favourite: 
+            return render(request, "favourite_already_exists.html", status=400)
+        UserFavouriteArticle.objects.create(user=request.user, article=article)
         return redirect('favourites')
