@@ -11,6 +11,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import *
 import json
 from django.http import JsonResponse
+from django.contrib.auth import authenticate, login
 
 
 # def handler404(request, exception):
@@ -47,6 +48,17 @@ class Login(FormView):
     form_class = CustomAuthenticationForm
     template_name = 'account/base.html'
     success_url = reverse_lazy('login')
+    def post(self, request, **kwargs):
+        content_type = request.content_type or ''
+        if 'application/json' in content_type:
+            data = json.loads(request.body)
+            payload = data.get('payload', {})
+            user = authenticate(request, username=payload['username'], password=payload['password'])
+            if user:
+                login(request, user)
+                return JsonResponse({'status': 'User logged!', 'username':user.username})
+            return JsonResponse({'status': 'User not logged!'})
+        return super().post(request, **kwargs)
     def form_valid(self, form):
         login(self.request, form.get_user())
         return super().form_valid(form)
