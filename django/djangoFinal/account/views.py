@@ -23,7 +23,7 @@ class Register(CreateView):
     model = User
     form_class = UserCreationForm
     template_name = 'account/register.html'
-    success_url = reverse_lazy('login')
+    success_url = reverse_lazy('account')
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated:
             raise Http404
@@ -33,7 +33,7 @@ class Login(FormView):
     model = User
     form_class = CustomAuthenticationForm
     template_name = 'account/base.html'
-    success_url = reverse_lazy('login')
+    success_url = reverse_lazy('account')
     def post(self, request, **kwargs):
         content_type = request.content_type or ''
         if 'application/json' in content_type:
@@ -52,7 +52,7 @@ class Login(FormView):
 class Logout(View):
     def get(self, request, **kwargs):
         logout(self.request)
-        return redirect('login')
+        return redirect('account')
     def post(self, request, **kwargs):
         logout(self.request)
         return JsonResponse({'status': 'User logged out!'})

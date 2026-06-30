@@ -74,7 +74,7 @@
         password: $('#id_password').val(),
     };
     $.ajax({
-        url: "{% url 'login' %}",
+        url: "{% url 'account' %}",
         type: "POST",
         contentType: "application/json",
         dataType: "json",
