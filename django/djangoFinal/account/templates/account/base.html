@@ -16,6 +16,7 @@
    </head>
    <body>
 <h2 style="font-weight: bold;">Chat<small class="text-muted"> Share your thoughts</small></h2><br>
+{% block content %}
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
@@ -30,16 +31,43 @@
     </ul>
     {% if not user.is_authenticated %}
     <ul class="navbar-nav">
-    <form id="form_login" class="form-inline my-2 my-lg-0" style="gap: 8px;" method="post">
-        {% csrf_token %}
+    <form id="form-login" class="form-inline my-2 my-lg-0" style="gap: 8px;" method="post">
         {{ form.username }}
         {{ form.password }}
         <button type="submit" class="btn btn-light">Login</button>
     </form>
+    </ul>
+    {% else %}
+    <ul class="navbar-nav">
+        <li class="nav-item active">
+            <a class="nav-link">Logged as {{ user }}</a>
+        </li>
+        <li class="nav-item active">
+            <form id="form-logout" method="post">
+                <button type="submit" class="btn btn-light">Logout</button>
+            </form>
+        </li>
+    </ul>
+    {% endif %}
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script type="text/javascript">
-   $('form').on('submit', function(e) {
+
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+   $(document).on('submit', '#form-login', function(e) {
     e.preventDefault();
     const payload = {
         username: $('#id_username').val(),
@@ -50,39 +78,48 @@
         type: "POST",
         contentType: "application/json",
         dataType: "json",
-        headers: {"X-CSRFToken": "{{ csrf_token }}"},
+        headers: {"X-CSRFToken": getCookie('csrftoken')},
         data: JSON.stringify({payload: payload}),
         success: function(data){
-            console.log(data);
-            $('#form_login').empty();
-            let logged = `<ul class="navbar-nav">
-    <li class="nav-item active">
-        <a class="nav-link">Logged as ${data.username}<span class="sr-only">(current)</span></a>
-    </li>
-    <li class="nav-item active">
-        <a class="nav-link" href="{% url 'register'%}">Logout<span class="sr-only">(current)</span></a>
-    </li>
-    </ul>`
-            $('#form_login').append(logged)
-        },
+        console.log(data);
+        let logged = `<ul class="navbar-nav">
+            <li class="nav-item active">
+                <a class="nav-link">Logged as ${data.username}</a>
+            </li>
+            <li class="nav-item active">
+                <form id="form-logout" method="post">
+                    <button type="submit" class="btn btn-light">Logout</button>
+                </form>
+            </li>
+        </ul>`;
+        $('#form-login').closest('ul').replaceWith(logged);
+    },
+        error: (error) => console.log(error)
+    });
+});
+
+$(document).on('submit', '#form-logout', function(e) {
+    e.preventDefault();
+    $.ajax({
+        url: "{% url 'logout' %}",
+        type: "POST",
+        headers: {"X-CSRFToken": getCookie('csrftoken')},
+        success: function(data){
+        console.log(data);
+        let logged = `<form id="form-login" class="form-inline my-2 my-lg-0" style="gap: 8px;" method="post">
+            {% csrf_token %}
+            {{ form.username }}
+            {{ form.password }}
+            <button type="submit" class="btn btn-light">Login</button>
+        </form>`;
+        $('#form-logout').closest('li').parent().replaceWith(`<ul class="navbar-nav">${logged}</ul>`);
+    },
         error: (error) => console.log(error)
     });
 });
 </script>
-    </ul>
-    {% else %}
-    <ul class="navbar-nav">
-    <li class="nav-item active">
-        <a class="nav-link">Logged as {{user}}<span class="sr-only">(current)</span></a>
-    </li>
-    <li class="nav-item active">
-        <a class="nav-link" href="{% url 'register'%}">Logout<span class="sr-only">(current)</span></a>
-    </li>
-    </ul>
-    {% endif %}
   </div>
 </nav>
-      {% block content %}
       {% endblock %}
    </body>
 </html>

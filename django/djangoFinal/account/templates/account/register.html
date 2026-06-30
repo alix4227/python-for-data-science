@@ -15,7 +15,7 @@
         </div>
     {% endif %}
 
-    <form method="post">
+    <form method="post" action="{% url 'register' %}">
         {% csrf_token %}
         {% for field in form %}
             <div style="margin-bottom: 1em;">
@@ -29,23 +29,4 @@
         <button type="submit">Créer</button>
     </form>
 </div>
-<script type="text/javascript">
-   $('form').on('submit', function(e) {
-    e.preventDefault();
-    const payload = {
-        username: $('#id_username').val(),
-        password: $('#id_password1').val(),
-    };
-    $.ajax({
-        url: "{% url 'register' %}",
-        type: "POST",
-        contentType: "application/json",
-        dataType: "json",
-        headers: {"X-CSRFToken": "{{ csrf_token }}"},
-        data: JSON.stringify({payload: payload}),
-        success: (data) => console.log(data),
-        error: (error) => console.log(error)
-    });
-});
-</script>
 {% endblock %}

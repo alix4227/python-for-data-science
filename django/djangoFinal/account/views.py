@@ -12,6 +12,8 @@ from django.http import *
 import json
 from django.http import JsonResponse
 from django.contrib.auth import authenticate, login
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
 
 
 # def handler404(request, exception):
@@ -22,22 +24,6 @@ class Register(CreateView):
     form_class = UserCreationForm
     template_name = 'account/register.html'
     success_url = reverse_lazy('login')
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-    #     context["form_register"] = UserCreationForm
-    #     return context
-    def post(self, request, **kwargs):
-        content_type = request.content_type or ''
-        if 'application/json' in content_type:
-            data = json.loads(request.body)
-            payload = data.get('payload', {})
-            user = User.objects.create_user(
-                username=payload['username'],
-                password=payload['password']
-            )
-            user.save()
-            return JsonResponse({'status': 'User created!'})
-        return super().post(request, **kwargs)
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated:
             raise Http404
@@ -63,7 +49,10 @@ class Login(FormView):
         login(self.request, form.get_user())
         return super().form_valid(form)
     
-class Logout(TemplateView):
+class Logout(View):
     def get(self, request, **kwargs):
         logout(self.request)
-        return redirect('home')
+        return redirect('login')
+    def post(self, request, **kwargs):
+        logout(self.request)
+        return JsonResponse({'status': 'User logged out!'})
