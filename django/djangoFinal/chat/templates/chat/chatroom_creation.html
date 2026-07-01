@@ -1,0 +1,13 @@
+{% extends "chat/base.html" %}
+{% block title %}Create a chatroom{% endblock %}
+{% block style%} {% endblock %}
+{%block content%}
+<br> 
+<center>
+<form class= "form" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+<button type="submit" class="btn btn-primary">Submit</button>
+</form>
+</center>
+{%endblock%}

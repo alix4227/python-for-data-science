@@ -17,8 +17,12 @@ Including another URLconf
 from django.urls import path
 from django.views.generic import *
 from . import views
+from .views import *
+from django.views.generic import *
 
 urlpatterns = [
     path("", views.index, name="index"),
-   
+    path("createMessage/", CreateMessage.as_view(), name="create_message"),
+    path("chatroomCreation/", CreateChatroom.as_view(), name="chatroomCreation"),
+    path("<str:room_name>/", views.room, name="room"),
 ]

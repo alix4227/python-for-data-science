@@ -33,7 +33,7 @@ class Login(FormView):
     model = User
     form_class = CustomAuthenticationForm
     template_name = 'account/base.html'
-    success_url = reverse_lazy('account')
+    success_url = reverse_lazy('http://localhost:8000/chat/')
     def post(self, request, **kwargs):
         content_type = request.content_type or ''
         if 'application/json' in content_type:
