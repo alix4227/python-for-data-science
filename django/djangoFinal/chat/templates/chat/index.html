@@ -3,6 +3,7 @@
 {% block style%} {% endblock %}
 {%block content%}
 <center>
+{% if user.is_authenticated %}
 <br>
 What chat room would you like to enter?<br>
     
@@ -11,7 +12,8 @@ What chat room would you like to enter?<br>
         <div><a href="{{chatroom}}/">{{chatroom}}</a></div>
          {%endfor%}
     </ul>
-    
-   
+{% else %}
+<h2>No user logged!</h1>
+{% endif %}
 </center>
 {%endblock%}

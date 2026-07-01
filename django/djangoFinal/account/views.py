@@ -40,10 +40,11 @@ class Login(FormView):
             data = json.loads(request.body)
             payload = data.get('payload', {})
             user = authenticate(request, username=payload['username'], password=payload['password'])
-            if user:
+            if user is not None:
+                print(user)
                 login(request, user)
                 return JsonResponse({'status': 'User logged!', 'username':user.username})
-            return JsonResponse({'status': 'User not logged!'})
+            return JsonResponse({'status': 'User not logged!'}, status=401)
         return super().post(request, **kwargs)
     def form_valid(self, form):
         login(self.request, form.get_user())

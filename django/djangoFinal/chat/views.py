@@ -8,7 +8,9 @@ def index(request):
     return render(request, "chat/index.html", {"chatrooms":chatrooms})
 
 def room(request, room_name):
-    return render(request, "chat/room.html", {"room_name": room_name})
+    if request.user.is_authenticated:
+        return render(request, "chat/room.html", {"room_name": room_name})
+    return redirect("account")
 
 class CreateChatroom(CreateView):
     model = Chatroom

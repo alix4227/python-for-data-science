@@ -19,8 +19,8 @@ from django.views.generic import *
 from .views import *
 
 urlpatterns = [
-    path("register", Register.as_view(), name="register"),
-    path("account", Login.as_view(), name="account"),
-    path("logout", Logout.as_view(), name="logout"),
+    path("register/", Register.as_view(), name="register"),
+    path("account/", Login.as_view(), name="account"),
+    path("logout/", Logout.as_view(), name="logout"),
 
 ]

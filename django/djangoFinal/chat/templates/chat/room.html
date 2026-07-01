@@ -4,6 +4,7 @@
 {%block content%}
 <br> 
 <center>
+    {% if user.is_authenticated %}
     <form id="chat-form">
         <textarea id="chat-log" cols="100" rows="20"></textarea><br>
         <input id="chat-message-input" type="text" name="content" size="100"><br><br>
@@ -24,8 +25,13 @@
         chatSocket.onmessage = function(e) {
             const data = JSON.parse(e.data);
             document.querySelector('#chat-log').value += (data.message + '\n');
-        };
+            if (data.messages && data.messages.length > 0) {
+            data.messages.forEach(msg => {
+                document.querySelector('#chat-log').value += msg + '\n';
+            });
 
+        };
+    }
         chatSocket.onclose = function(e) {
             console.error('Chat socket closed unexpectedly');
         };
@@ -49,5 +55,8 @@
             messageInputDom.value = '';
         });
     </script>
+    {% else %}
+    <h2>No user logged!</h1>
 </center>
+{%endif%}
 {%endblock%}
