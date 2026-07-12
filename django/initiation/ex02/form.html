@@ -5,7 +5,7 @@
     <script src="popup.js"></script>
   </head>
   <body>
-    <h2>Sign up Form</h2>
+    <h1>Sign up Form</h1>
     <form>
         <label>Firstname: <input id="firstname" type="text" required></label>
         <br><br>
@@ -19,9 +19,9 @@
         <br><br>
         <label>Student at 42 ?: <input type="checkbox" id="student"></label>
         <br><br>
-        <label>Male<input type="radio" id="gender_male" name="option"></label>
-        <label>Female<input type="radio" id="gender_female" name="option"></label>
-        <label>Other<input type="radio" id="gender_other" name="option"></label>
+        <label>Male<input type="radio" id="gender_male" value= "Male" name="option"></label>
+        <label>Female<input type="radio" id="gender_female" value= "Female" name="option"></label>
+        <label>Other<input type="radio" id="gender_other" value= "Other" name="option"></label>
         <br><br>
         <input type="submit" value="Run sexy JS code" onclick="displayFormContents()">
     </form>

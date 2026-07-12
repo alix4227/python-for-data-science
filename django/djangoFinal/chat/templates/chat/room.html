@@ -5,13 +5,6 @@
 <br> 
 <center>
     {% if user.is_authenticated %}
-    <!-- <form id="chat-form">
-        <textarea id="chat-log" cols="100" rows="20"></textarea><br>
-        <input id="chat-message-input" type="text" name="content" size="100"><br><br>
-          <button id="chat-message-submit" type="submit" class="btn btn-primary">Send</button>
-    </form>
-    <textarea id="chat-connected" cols="100" rows="20"></textarea><br> -->
-
 <div class="container-fluid h-100">
 			<div class="row justify-content-center h-100">
 				<div class="col-md-4 col-xl-3 chat"><div class="card mb-sm-3 mb-md-0 contacts_card">
@@ -92,14 +85,15 @@
         chatSocket.onmessage = function(e) {
             const data = JSON.parse(e.data);
 
+             if (data.message) {
+                appendMessage(data.message);
+            }
+
             if (data.messages && data.messages.length > 0 && messagesContainer) {
                 messagesContainer.innerHTML = '';
                 data.messages.forEach(msg => appendMessage(msg));
             }
 
-            if (data.message) {
-                appendMessage(data.message);
-            }
 
             if (data.members_connected && data.members_connected.length > 0) {
                 if (membersList) {
