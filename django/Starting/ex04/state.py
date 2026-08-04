@@ -15,12 +15,12 @@ def capital_city(args):
 "NJ": "Trenton",
 "CO": "Denver"
 }
-    for key, value in states.items():
-        if key == args[1]:
-            for state, capital in capital_cities.items():
+    for state, capital in capital_cities.items():
+        if capital == args[1]:
+            for key, value in states.items():
                 if state == value:
-                    print(f'{capital}')
+                    print(f'{key}')
                     return 1
-    print('Unknown State')
+    print('Unknown capital city')
 if __name__ == '__main__':
     capital_city(sys.argv)
