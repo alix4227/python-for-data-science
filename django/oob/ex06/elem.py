@@ -5,20 +5,14 @@ class Text(str):
     """
     A Text class to represent a text you could use with your HTML elements.
 
-    Because directly using str class was too mainstream.
     """
    
     def __str__(self):
-        """
-        Do you really need a comment to understand this method?..
-        """
         s = super().__str__()
-        if s == '<':
-            s = s.replace('<', '&lt;')
-        elif s == '>':
-            s = s.replace('>', '&gt;')
-        elif s == '"':
-            s = s.replace('"', '&quot;')
+        s = s.replace('&', '&amp;')
+        s = s.replace('<', '&lt;')
+        s = s.replace('>', '&gt;')
+        s = s.replace('"', '&quot;')
         s = s.replace('\n', '\n<br />\n')
         return s
 

@@ -7,8 +7,8 @@ class HotBeverage:
     def __str__(self):
         return(f"-----------------\n"
             f"name : {self.name}\n"
-                f"price : {self.price:.2f}\n"
-                f"description : {self.description()}")
+            f"price : {self.price:.2f}\n"
+            f"description : {self.description()}")
     
 class Coffee(HotBeverage):
     def __init__(self):

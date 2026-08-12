@@ -59,7 +59,6 @@ class Page():
     
 
     def check_Ul_and_Ol(self, element):
-
         if element is None or isinstance(element, Text):
             return True
         
@@ -162,30 +161,43 @@ class Page():
         return (title == 2)
    
     def check_body_content(self, body):
-        if not isinstance(body.content, BODY_ELEMENTS):
-            return False
-        elif isinstance(body.content, list):
-            for item in body.content:
-                if not isinstance(item, BODY_ELEMENTS):
-                    return False 
-        return True
+        if body is None or body == '' or isinstance(body, Text):
+            return True
+        if isinstance(body, Elem):
+            content = body.content
+            if content in (None, '') or isinstance(content, Text):
+                return True
+            if isinstance(content, list):
+                for item in content:
+                    if not isinstance(item, BODY_ELEMENTS):
+                        return False
+                return True
+            return isinstance(content, BODY_ELEMENTS)
+        if isinstance(body, list):
+            for item in body:
+                if not self.check_body_content(item):
+                    return False
+            return True
+        return False
     
     def check_div_content(self, element):
-        if element is None or isinstance(element, Text):
+        if element is None or element == '' or isinstance(element, Text):
             return True
         
         if isinstance(element, Div):
-            if isinstance(element.content, list):
-                for item in element.content:
+            content = element.content
+            if content in (None, '') or isinstance(content, Text):
+                return True
+            if isinstance(content, list):
+                for item in content:
                     if not isinstance(item, BODY_ELEMENTS):
                         return False
-            elif not isinstance(element.content, BODY_ELEMENTS):
-                return False
-            return True
-        
+                return True
+            return isinstance(content, BODY_ELEMENTS)
+
         if isinstance(element, Elem):
             return self.check_div_content(element.content)
-        
+
         if isinstance(element, list):
             for item in element:
                 if not self.check_div_content(item):
@@ -213,7 +225,7 @@ class Page():
             if isinstance(element.content, list):
                 count_text = 0
                 for item in element.content:
-                    if isinstance(element.content, Elem) and not isinstance(element.content, Text):
+                    if isinstance(item, Elem) and not isinstance(item, Text):
                         return False
                     count_text += 1
                 if count_text > 1:
@@ -265,7 +277,6 @@ class Page():
 
     def checker(self):
         html_page = self.element
-        print(type(html_page))
         if not self.check_body_and_head():
             return False
         if not self.check_elements(html_page):
@@ -300,7 +311,8 @@ class Page():
         with open(filename, 'w') as file:
             if isinstance(self.element, Html):
                 file.write(f'<!DOCTYPE html>\n{str(self.element)}')
-            file.write(f'{str(self.element)}')
+            else:
+                file.write(f'{str(self.element)}')
 
             
     def __str__(self):
@@ -308,14 +320,259 @@ class Page():
             return(f'<!DOCTYPE html>\n{str(self.element)}')
         return(f'{str(self.element)}')
 
-def main(): 
-    test = Page(Html([
-    Head(content=Title()),
-    Body(Div([Table([Tr(Th([Text(), Text()]))])]))
-]))
-    print(test)
-    test.write_to_file('Alix.html')
+def main():
+    tests = [
+        (
+            "valid page",
+            Page(Html([
+                Head(Title(Text("Hello World!"))),
+                Body(Div([
+                    Table([
+                        Tr([Th(Text("Name")), Th(Text("Age"))]),
+                        Tr([Td(Text("Alix")), Td(Text("100"))]),
+                    ], attr=' style="border: 1px solid black; border-collapse: collapse;"')
+                ]))
+            ])),
+            True
+        ),
+        (
+            "invalid unknown node type",
+            Page(Html([
+                Head(Title(Text("Hello World!"))),
+                Body(Test(Text("bad")))
+            ])),
+            False
+        ),
+        (
+            "invalid html order",
+            Page(Html([
+                Body(Div(Text("bad"))),
+                Head(Title(Text("Hello World!")))
+            ])),
+            False
+        ),
+        (
+            "invalid html with extra head",
+            Page(Html([
+                Head(Title(Text("Hello World!"))),
+                Head(Title(Text("Second title"))),
+                Body(Div(Text("content")))
+            ])),
+            False
+        ),
+        (
+            "invalid head with extra element",
+            Page(Html([
+                Head([Title(Text("Hello World!")), Meta()]),
+                Body(Div(Text("content")))
+            ])),
+            False
+        ),
+        (
+            "invalid title with two texts",
+            Page(Html([
+                Head(Title([Text("Hello"), Text("World")])),
+                Body(Div(Text("content")))
+            ])),
+            False
+        ),
+        (
+            "invalid body with p",
+            Page(Html([
+                Head(Title(Text("Hello World!"))),
+                Body(P(Text("not allowed")))
+            ])),
+            False
+        ),
+        (
+            "invalid div with p",
+            Page(Html([
+                Head(Title(Text("Hello World!"))),
+                Body(Div(P(Text("not allowed"))))
+            ])),
+            False
+        ),
+        (
+            "valid span with p",
+            Page(Html([
+                Head(Title(Text("Hello World!"))),
+                Body(Span([Text("hello"), P(Text("world"))]))
+            ])),
+            True
+        ),
+        (
+            "invalid p with div",
+            Page(Html([
+                Head(Title(Text("Hello World!"))),
+                Body(Div(P([Text("hello"), Div(Text("bad"))])))
+            ])),
+            False
+        ),
+        (
+            "empty body",
+            Page(Html([
+                Head(Title(Text("Hello World!"))),
+                Body()
+            ])),
+            True
+        ),
+        (
+            "empty div",
+            Page(Html([
+                Head(Title(Text("Hello World!"))),
+                Body(Div())
+            ])),
+            True
+        ),
+        (
+            "invalid ul empty",
+            Page(Html([
+                Head(Title(Text("Hello World!"))),
+                Body(Ul())
+            ])),
+            False
+        ),
+        (
+            "valid ul with li",
+            Page(Html([
+                Head(Title(Text("Hello World!"))),
+                Body(Ul([Li(Text("item"))]))
+            ])),
+            True
+        ),
+        (
+            "invalid title twice",
+            Page(Html([
+                Head([
+                    Title(Text("Hello")),
+                    Title(Text("World"))
+                ]),
+                Body(Div(Text("content")))
+            ])),
+            False
+        ),
+        (
+            "invalid ul with non-li",
+            Page(Html([
+                Head(Title(Text("Hello World!"))),
+                Body(Ul([Li(Text("ok")), Div(Text("bad"))]))
+            ])),
+            False
+        ),
+        (
+            "valid ol with li",
+            Page(Html([
+                Head(Title(Text("Hello World!"))),
+                Body(Ol([Li(Text("first")), Li(Text("second"))]))
+            ])),
+            True
+        ),
+        (
+            "invalid ol with non-li",
+            Page(Html([
+                Head(Title(Text("Hello World!"))),
+                Body(Ol([Li(Text("ok")), Div(Text("bad"))]))
+            ])),
+            False
+        ),
+        (
+            "valid tr with th",
+            Page(Html([
+                Head(Title(Text("Hello World!"))),
+                Body(Table([
+                    Tr([Th(Text("Name")), Th(Text("Age"))])
+                ]))
+            ])),
+            True
+        ),
+        (
+            "valid tr with td",
+            Page(Html([
+                Head(Title(Text("Hello World!"))),
+                Body(Table([
+                    Tr([Td(Text("Alix")), Td(Text("100"))])
+                ]))
+            ])),
+            True
+        ),
+        (
+            "invalid table row mixed td/th",
+            Page(Html([
+                Head(Title(Text("Hello World!"))),
+                Body(Table([
+                    Tr([Th(Text("Name")), Td(Text("Age"))])
+                ]))
+            ])),
+            False
+        ),
+        (
+            "invalid tr empty",
+            Page(Html([
+                Head(Title(Text("Hello World!"))),
+                Body(Table([
+                    Tr()
+                ]))
+            ])),
+            False
+        ),
+        (
+            "invalid table with div",
+            Page(Html([
+                Head(Title(Text("Hello World!"))),
+                Body(Table([
+                    Div(Text("bad"))
+                ]))
+            ])),
+            False
+        ),
+        (
+            "valid h1 with text",
+            Page(Html([
+                Head(Title(Text("Hello World!"))),
+                Body(H1(Text("Heading")))
+            ])),
+            True
+        ),
+        (
+            "invalid h1 with two texts",
+            Page(Html([
+                Head(Title(Text("Hello World!"))),
+                Body(H1([Text("one"), Text("two")]))
+            ])),
+            False
+        ),
+        (
+            "invalid td with two texts",
+            Page(Html([
+                Head(Title(Text("Hello World!"))),
+                Body(Table([
+                    Tr([Td([Text("one"), Text("two")])])
+                ]))
+            ])),
+            False
+        ),
+    ]
 
+    for name, page, expected in tests:
+        result = page.is_valid()
+        status = "OK" if result == expected else "FAIL"
+        print(f"{status} - {name}: expected={expected}, got={result}")
+
+    page = Page(Html([
+                Head(Title(Text("Hello World!"))),
+                Body(Div([
+                    Table([
+                        Tr([Th(Text("Name")), Th(Text("Age"))]),
+                        Tr([Td(Text("Alix")), Td(Text("100"))]),
+                    ], attr=' style="border: 1px solid black; border-collapse: collapse;"')
+                ]))
+            ]))
+    print(page)
+    page.write_to_file("test.html")
+
+    page2 = Page(Body(Div(Text("bad"))))
+    print(page2)
+    page2.write_to_file("test2.html")
 
 if __name__ == '__main__':
     main()

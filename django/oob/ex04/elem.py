@@ -9,19 +9,13 @@ class Text(str):
     """
    
     def __str__(self):
-        """
-        Do you really need a comment to understand this method?..
-        """
         s = super().__str__()
-        if s == '<':
-            s = s.replace('<', '&lt;')
-        elif s == '>':
-            s = s.replace('>', '&gt;')
-        elif s == '"':
-            s = s.replace('"', '&quot;')
+        s = s.replace('&', '&amp;')
+        s = s.replace('<', '&lt;')
+        s = s.replace('>', '&gt;')
+        s = s.replace('"', '&quot;')
         s = s.replace('\n', '\n<br />\n')
         return s
-
 
 class Elem:
     """
