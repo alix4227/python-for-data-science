@@ -24,14 +24,15 @@ def road_to_philo(search, count, list_titles):
     if main_title.string in list_titles:
         print('It leads to an infinite loop !')
         sys.exit(1)
-    list_titles.append(main_title)
+    list_titles.append(main_title.string)
     print(main_title.string)
     count += 1
     if main_title.string == 'Philosophy':
         return(count)  
-    div = soup.find('div', id='bodyContent')
+    div = soup.find('div', id="mw-content-text")
     for p in div.find_all('p'):
-        link = p.find('a', class_=lambda c: not c or 'mw-disambig' not in c, href=lambda h: h and h.startswith('/wiki/'))
+        link = p.find('a', id=lambda c: c, href=lambda h: h and h.startswith('/wiki/'))
+        print(link)
         if link and link.get('class'):
            count += 1
         if link:
