@@ -3,6 +3,8 @@ from django.utils import timezone
 from ex02.forms import LoginForm
 from django.conf import settings
 import os
+
+
 def form(request):
     title = 'Text Area'
     logs = []
@@ -19,7 +21,6 @@ def form(request):
                 file.write(f"[{timestamp}]{text + '\n'}")
             with open(settings.LOG_FILE, 'r') as file2:
                 logs = file2.readlines()
-            MyLoginForm = LoginForm()
             return redirect('form')
     else:
         MyLoginForm = LoginForm()
