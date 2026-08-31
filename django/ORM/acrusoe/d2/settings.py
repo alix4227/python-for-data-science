@@ -91,6 +91,9 @@ DATABASES = {
         'PASSWORD': 'secret',
         'HOST': 'localhost',
         'PORT': '5433',
+        'OPTIONS': {
+            'gssencmode': 'disable',
+        },
     }
 }
 

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Ex00 : Markdown Cheatsheet.</title>
+    <title>Star Wars Movies</title>
     <style>
       span {
         text-decoration: underline;
@@ -54,7 +54,11 @@
   </head>
   <body>
   <center>
-    {% if not table %}
+    {% if results %}
+        {% for result in results %}
+            <p>{{ result }}</p>
+        {% endfor %}
+    {% elif not table %}
         <h2>{{result}}</h2>
     {% else %}
         <table>

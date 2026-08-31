@@ -35,38 +35,47 @@ def init(request):
 
 def populate(request):
     conn = None
+    results = []
+    movies = [
+        ('The Phantom Menace', 1, 'George Lucas', 'Rick McCallum', '1999-05-19'),
+        ('Attack of the Clones', 2, 'George Lucas', 'Rick McCallum', '2002-05-16'),
+        ('Revenge of the Sith', 3, 'George Lucas', 'Rick McCallum', '2005-05-19'),
+        ('A New Hope', 4, 'George Lucas', 'Gary Kurtz, Rick McCallum', '1977-05-25'),
+        ('The Empire Strikes Back', 5, 'Irvin Kershner', 'Gary Kutz, Rick McCallum', '1980-05-17'),
+        ('Return of the Jedi', 6, 'Richard Marquand', 'Howard G. Kazanjian, George Lucas, Rick McCallum', '1983-05-25'),
+        ('The Force Awakens', 7, 'J. J. Abrams', 'Kathleen Kennedy, J. J. Abrams, Bryan Burk', '2015-12-11'),
+    ]
     try:
         conn = psycopg2.connect(
-        dbname="formationdjango",
-        user="djangouser",
-        password="secret",
-        host="localhost",
-        port="5433"
-    )
+            dbname="formationdjango",
+            user="djangouser",
+            password="secret",
+            host="localhost",
+            port="5433"
+        )
 
         with conn.cursor() as cur:
-            movies = [
-            ('The Phantom Menace',        1, 'George Lucas',    'Rick McCallum',                                       '1999-05-19'),
-            ('Attack of the Clones',      2, 'George Lucas',    'Rick McCallum',                                       '2002-05-16'),
-            ('Revenge of the Sith',       3, 'George Lucas',    'Rick McCallum',                                       '2005-05-19'),
-            ('A New Hope',                4, 'George Lucas',    'Gary Kurtz, Rick McCallum',                           '1977-05-25'),
-            ('The Empire Strikes Back',   5, 'Irvin Kershner',  'Gary Kutz, Rick McCallum',                           '1980-05-17'),
-            ('Return of the Jedi',        6, 'Richard Marquand','Howard G. Kazanjian, George Lucas, Rick McCallum',   '1983-05-25'),
-            ('The Force Awakens',         7, 'J. J. Abrams',    'Kathleen Kennedy, J. J. Abrams, Bryan Burk',         '2015-12-11'),
-            ]
-            cur.executemany("""
-                INSERT INTO ex02_movies (title, episode_nb, director, producer, release_date)
-                VALUES (%s, %s, %s, %s, %s);
-            """, movies)
-        conn.commit()
-        result = 'OK'
+            for movie in movies:
+                try:
+                    cur.execute(
+                        """
+                            INSERT INTO ex02_movies (title, episode_nb, director, producer, release_date)
+                            VALUES (%s, %s, %s, %s, %s);
+                        """,
+                        (movie[0], movie[1], movie[2], movie[3], movie[4]),
+                    )
+                    conn.commit()
+                    results.append('OK')
+                except psycopg2.Error as e:
+                    conn.rollback()
+                    results.append(f"{title}: {e}")
         conn.close()
-   
+
     except psycopg2.Error as e:
         if conn:
             conn.rollback()
-        result = e
-    return render(request, 'ex00/index.html', {"result": result})
+        results.append(f"Database error: {e}")
+    return render(request, 'ex02/index.html', {"results": results})
 
 def display(request):
     conn = None

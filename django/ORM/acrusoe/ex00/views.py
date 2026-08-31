@@ -15,7 +15,7 @@ def index(request):
         with conn.cursor() as cur:
             cur.execute("""
                 CREATE TABLE IF NOT EXISTS ex00_movies (
-                    title           VARCHAR(100) NOT NULL UNIQUE,
+                    title           VARCHAR(64) NOT NULL UNIQUE,
                     episode_nb      INTEGER PRIMARY KEY,
                     opening_crawl   TEXT,
                     director        VARCHAR(32) NOT NULL,

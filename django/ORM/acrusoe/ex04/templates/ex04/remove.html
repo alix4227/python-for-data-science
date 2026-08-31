@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Ex00 : Markdown Cheatsheet.</title>
+    <title>Star Wars Movies</title>
     <style>
       span {
         text-decoration: underline;
@@ -57,10 +57,9 @@
     {% if not titles %}
         <h2>{{result}}</h2>
     {% else %}
-    <form method="POST" action="{% url 'remove' %}">
+    <form method="POST" action="{% url 'ex04:remove' %}">
         {% csrf_token %}
       <label for="movie-select">Choisissez un film&nbsp;:</label>
-
       <select name="movies" id="movie-select">
         <option value="">--Veuillez choisir une option--</option>
         {%for title in titles%}
@@ -69,6 +68,7 @@
       </select>
       <button type="submit">Remove</button>
     </form>
+    {% endif %}
   </center>
   </body>
 </html>
