@@ -10,12 +10,12 @@ class User(AbstractUser):
 
 class Tip(models.Model):
     date = models.DateTimeField(auto_now_add=True)
-    contenu = models.TextField()
+    contenu = models.TextField(max_length=64)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     upvote = models.ManyToManyField(User, related_name='upvote')
     downvote = models.ManyToManyField(User, related_name='downvote')
     class Meta:
         db_table = "Tip"
         permissions = [
-        ('can_downvote_tip', 'Can downvote tip'),  # (codename, description)
+        ('can_downvote_tip', 'Can downvote tip'),
 ]
