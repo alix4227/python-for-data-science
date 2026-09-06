@@ -55,7 +55,7 @@
         <a class="nav-link" href="{% url 'home'%}"><i class="bi bi-files" style="color: black;"></i><span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item active">
-        <a class="nav-link" href="{% url 'display'%}">{% trans "Articles" %}<span class="sr-only">(current)</span></a>
+        <a class="nav-link" href="{% url 'articles'%}">{% trans "Last Articles" %}<span class="sr-only">(current)</span></a>
       </li>
       {% if not user.is_authenticated %}
       <li class="nav-item active">

@@ -1,5 +1,12 @@
 {% extends "base.html" %}
 {% block title %}djangoAdvanced: Home{% endblock %}
 {% block style%} {% endblock %}
-{%block content%} 
+{%block content%}
+{% if form.non_field_errors %}
+<div class="alert alert-danger text-center">
+    {% for error in form.non_field_errors %}
+        {{ error }}
+    {% endfor %}
+</div>
+{% endif %}
 {%endblock%}
